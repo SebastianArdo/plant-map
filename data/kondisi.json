@@ -1,0 +1,374 @@
+{
+  "source": "CMMS",
+  "sample": true,
+  "updated": "2026-11-17T08:00:00+08:00",
+  "systems": [
+    {
+      "system": "Rotary Kiln 4",
+      "state": "MAINTENANCE ON",
+      "note": "Contoh: tetap jalan, ada WO PM yang sedang dikerjakan.",
+      "subs": [
+        {
+          "name": "Exhaust Gas Treatment Equip.",
+          "state": "MAINTENANCE ON"
+        }
+      ],
+      "wo": [
+        {
+          "no": "WO-CONTOH-101",
+          "type": "PM",
+          "title": "Contoh: PM bulanan exhaust gas treatment",
+          "st": "Dikerjakan",
+          "sub": "Exhaust Gas Treatment Equip.",
+          "wc": "202 MEC 4",
+          "disc": "Mechanical"
+        }
+      ],
+      "metrics": [
+        {
+          "period": "7d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 5.4,
+          "mtbf": 71,
+          "ma": 91.2,
+          "pa": 92.8,
+          "ua": 96.4,
+          "eu": 89.5
+        },
+        {
+          "period": "30d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 4.9,
+          "mtbf": 104,
+          "ma": 94.1,
+          "pa": 95.0,
+          "ua": 96.9,
+          "eu": 92.1
+        }
+      ]
+    },
+    {
+      "system": "Rotary Dryer 4",
+      "state": "RUNNING",
+      "cmOpen": 1,
+      "wo": [
+        {
+          "no": "WO-CONTOH-102",
+          "type": "CM",
+          "title": "Contoh: abnormalitas switchgear, aset tetap jalan",
+          "st": "Dibuat",
+          "sub": "Rotary Dryer Switchgear",
+          "prio": "P3",
+          "disc": "Electrical",
+          "wc": "PIKET EMIP"
+        }
+      ],
+      "metrics": [
+        {
+          "period": "7d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 3.1,
+          "mtbf": 96,
+          "ma": 95.6,
+          "pa": 96.3,
+          "ua": 94.8,
+          "eu": 91.3
+        },
+        {
+          "period": "30d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 3.4,
+          "mtbf": 121,
+          "ma": 96.0,
+          "pa": 96.9,
+          "ua": 95.2,
+          "eu": 92.2
+        }
+      ]
+    },
+    {
+      "system": "Electric Smelting Furnace 3",
+      "state": "RUNNING",
+      "wo": [
+        {
+          "no": "WO-CONTOH-103",
+          "type": "PM",
+          "title": "Contoh: PM mingguan furnace switchgear",
+          "st": "Dijadwalkan",
+          "sub": "Furnace Switchgear",
+          "due": "2026-11-18",
+          "disc": "Electrical",
+          "wc": "242 ELM 3"
+        }
+      ],
+      "metrics": [
+        {
+          "period": "7d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 7.8,
+          "mtbf": 58,
+          "ma": 89.4,
+          "pa": 90.6,
+          "ua": 97.9,
+          "eu": 88.7
+        },
+        {
+          "period": "30d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 6.9,
+          "mtbf": 88,
+          "ma": 92.3,
+          "pa": 93.5,
+          "ua": 98.1,
+          "eu": 91.7
+        }
+      ]
+    },
+    {
+      "system": "Transfer Calcine 4",
+      "state": "RUNNING",
+      "cmOpen": 1,
+      "wo": [
+        {
+          "no": "WO-CONTOH-104",
+          "type": "CM",
+          "title": "Contoh: perbaikan encoder HCC",
+          "st": "Dibuat",
+          "sub": "HCC",
+          "disc": "Instrument",
+          "wc": "PIKET EMIP"
+        }
+      ],
+      "metrics": [
+        {
+          "period": "7d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 2.2,
+          "mtbf": "> 168",
+          "ma": 98.4,
+          "pa": 98.9,
+          "ua": 93.0,
+          "eu": 92.0
+        },
+        {
+          "period": "30d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 2.7,
+          "mtbf": 190,
+          "ma": 97.3,
+          "pa": 98.0,
+          "ua": 93.6,
+          "eu": 91.7
+        }
+      ]
+    },
+    {
+      "system": "Rotary Kiln 2",
+      "state": "RUNNING",
+      "metrics": [
+        {
+          "period": "7d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 6.8,
+          "mtbf": 52,
+          "ma": 87.1,
+          "pa": 88.4,
+          "ua": 95.2,
+          "eu": 84.2
+        },
+        {
+          "period": "30d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 6.1,
+          "mtbf": 79,
+          "ma": 89.0,
+          "pa": 90.2,
+          "ua": 95.8,
+          "eu": 86.4
+        }
+      ]
+    },
+    {
+      "system": "Rotary Kiln 3",
+      "state": "RUNNING",
+      "metrics": [
+        {
+          "period": "7d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 8.9,
+          "mtbf": 38,
+          "ma": 82.5,
+          "pa": 83.9,
+          "ua": 96.6,
+          "eu": 81.0
+        },
+        {
+          "period": "30d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 7.4,
+          "mtbf": 66,
+          "ma": 87.8,
+          "pa": 89.1,
+          "ua": 96.9,
+          "eu": 86.3
+        }
+      ]
+    },
+    {
+      "system": "Electric Smelting Furnace 2",
+      "state": "RUNNING",
+      "metrics": [
+        {
+          "period": "7d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 3.3,
+          "mtbf": 110,
+          "ma": 94.2,
+          "pa": 95.1,
+          "ua": 84.0,
+          "eu": 79.9
+        },
+        {
+          "period": "30d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 3.6,
+          "mtbf": 131,
+          "ma": 95.0,
+          "pa": 96.0,
+          "ua": 88.7,
+          "eu": 85.2
+        }
+      ]
+    },
+    {
+      "system": "Electric Smelting Furnace 4",
+      "state": "RUNNING",
+      "metrics": [
+        {
+          "period": "7d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 4.8,
+          "mtbf": 84,
+          "ma": 92.1,
+          "pa": 93.3,
+          "ua": 97.4,
+          "eu": 90.9
+        },
+        {
+          "period": "30d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 4.4,
+          "mtbf": 112,
+          "ma": 93.5,
+          "pa": 94.4,
+          "ua": 97.6,
+          "eu": 92.1
+        }
+      ]
+    },
+    {
+      "system": "Rotary Dryer 3",
+      "state": "RUNNING",
+      "metrics": [
+        {
+          "period": "7d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 5.0,
+          "mtbf": 70,
+          "ma": 90.0,
+          "pa": 91.2,
+          "ua": 93.5,
+          "eu": 85.3
+        },
+        {
+          "period": "30d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 4.6,
+          "mtbf": 95,
+          "ma": 91.4,
+          "pa": 92.5,
+          "ua": 94.1,
+          "eu": 87.0
+        }
+      ]
+    }
+  ],
+  "lines": [
+    {
+      "line": "Line 2",
+      "metrics": [
+        {
+          "period": "7d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 4.1,
+          "mtbf": 83,
+          "ma": 93.0,
+          "pa": 94.2,
+          "ua": 90.5,
+          "eu": 85.2
+        },
+        {
+          "period": "30d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 4.4,
+          "mtbf": 97,
+          "ma": 93.8,
+          "pa": 94.9,
+          "ua": 91.1,
+          "eu": 86.5
+        }
+      ]
+    },
+    {
+      "line": "Line 3",
+      "metrics": [
+        {
+          "period": "7d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 6.3,
+          "mtbf": 64,
+          "ma": 90.2,
+          "pa": 91.5,
+          "ua": 96.8,
+          "eu": 88.6
+        },
+        {
+          "period": "30d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 5.8,
+          "mtbf": 92,
+          "ma": 92.6,
+          "pa": 93.7,
+          "ua": 97.0,
+          "eu": 90.9
+        }
+      ]
+    },
+    {
+      "line": "Line 4",
+      "metrics": [
+        {
+          "period": "7d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 4.6,
+          "mtbf": 75,
+          "ma": 92.4,
+          "pa": 93.6,
+          "ua": 95.9,
+          "eu": 89.8
+        },
+        {
+          "period": "30d",
+          "asOf": "2026-11-17T06:00:00+08:00",
+          "mttr": 4.5,
+          "mtbf": 108,
+          "ma": 94.6,
+          "pa": 95.5,
+          "ua": 96.3,
+          "eu": 92.0
+        }
+      ]
+    }
+  ],
+  "note": "Semua angka pada file ini adalah contoh, bukan kondisi atau kinerja plant yang sebenarnya."
+}
