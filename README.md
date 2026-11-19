@@ -9,6 +9,7 @@ Bentuk, ukuran dan posisi adalah skematis; animasi proses adalah ilustrasi cara 
 |---|---|
 | `index.html` | Peta (kode dan data peta) |
 | `data/kondisi.json` | Data kondisi dan WO. Yang ada di repo ini adalah **data contoh**. |
+| `data/riwayat.json` | Riwayat maintenance (data dummy log aktivitas CMMS September 2026, tanpa nama pelaksana) |
 | `img/` | Citra satelit Google Earth (plant 21/9/2023) untuk alas peta, beserta masker tepinya |
 | `SPESIFIKASI-DATA.md` | Bentuk data dan cara menghubungkan ke website CMMS |
 

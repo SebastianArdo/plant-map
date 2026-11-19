@@ -260,7 +260,7 @@ Panel "Riwayat maintenance" menampilkan aktivitas pada rentang tanggal yang dipi
 - Yang dihitung peta dari file ini hanyalah **perkiraan untuk tampilan contoh**: jumlah PM/CM, "Sistem OFF" (aktivitas CM dengan Sistem Off, digabung bila tumpang tindih), jam OFF, MTTR (rata-rata durasi CM) dan PA (100% − jam OFF ÷ jam rentang).
 - **Untuk sambungan CMMS yang sebenarnya**, disarankan CMMS menyediakan perhitungan per rentang (misalnya `...?from=2026-09-01&to=2026-09-15`) dengan bentuk `metrics` yang sama seperti di atas, supaya aturan BRD §6.13 tetap satu sumber.
 - Tombol "Warnai peta menurut riwayat ini" mewarnai Sistem menurut jam OFF / jumlah CM pada rentang terpilih (mode warna "Riwayat"), dan kartu alat menampilkan garis waktu OFF/CM/PM.
-- Data riwayat asli tidak disimpan di repo publik ini.
+- Repo ini menyertakan `data/riwayat.json` berisi data dummy log aktivitas CMMS September 2026 (tanpa nama pelaksana), untuk contoh tampilan.
 
 ## 5. Mode TV per Line
 
@@ -297,6 +297,6 @@ Kalibrasi `geoRef` bawaan: ±30 m (dari kisi koordinat Google Earth). Bisa diper
 
 ## 6. Catatan
 
-- Jangan menaruh data plant asli di repo publik. `data/kondisi.json` di repo ini adalah data contoh.
+- `data/kondisi.json` di repo ini adalah data contoh; `data/riwayat.json` adalah data dummy dari CMMS (tanpa nama pelaksana). Jangan menaruh nama pelaksana atau data sensitif lain di repo publik.
 - Hasil pendataan dan edit layout di versi Claude disimpan di database artifact dan tidak ikut ke versi ini.
 - Posisi dan ukuran di peta skematis; kaitan Sistem ke lokasi dicocokkan dari nama dan belum seluruhnya dicek di lapangan.
