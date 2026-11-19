@@ -291,6 +291,36 @@ window.FENI_CONFIG = {
 
 Peta membandingkan status setiap 2 detik. Bila sebuah Sistem masuk atau keluar dari BREAKDOWN, MAINTENANCE OFF, STANDBY atau IDLE, muncul pemberitahuan di bawah layar (klik untuk menuju Sistem), tercatat di "Perubahan status terakhir" (8 terakhir), dan layar TV berkedip untuk BREAKDOWN. Bunyi bisa dinyalakan per perangkat (tombol 🔔). Tidak perlu data tambahan; cukup status yang dikirim seperti biasa.
 
+
+## 5d. Data perencanaan & kepatuhan (v3.76, belum dikirim CMMS)
+
+Peta sudah menyiapkan tempat untuk field berikut. Selama belum dikirim, peta menulis "menunggu data CMMS". Di `data/kondisi.json` contoh, field ini diisi data contoh.
+
+**Per Line** (di dalam tiap objek `lines`):
+
+```json
+{ "line": "Line 4", "metrics": [ ... ],
+  "pmCompliance": 94.2,                          // % PM selesai tepat waktu pada periode berjalan
+  "backlog": { "lt7": 5, "d7_30": 1, "gt30": 0 }, // jumlah WO terbuka menurut umur (hari)
+  "late": 0 }                                     // WO yang lewat tanggal jatuh tempo
+```
+
+**Prioritas** (tingkat atas, urutan ditentukan CMMS, maks. 5 ditampilkan):
+
+```json
+"priority": [ { "system": "Rotary Kiln 4", "reason": "Machine-Critical · RCA terlambat" } ]
+```
+
+**Per Sistem** (di dalam objek `systems`):
+
+```json
+"plan": { "nextPM": { "date": "2026-11-25", "title": "PM bulanan girth gear" },
+          "pic": "202 MEC 4 · 242 ELM 4",
+          "parts": [ { "name": "Support roller bearing", "stock": 2, "min": 2, "unit": "pcs" } ] }
+```
+
+Stok di bawah `min` ditandai merah di kartu. Rumus kepatuhan PM dan umur backlog mengikuti definisi CMMS; peta hanya menampilkan.
+
 ## 5b. Belum ada di peta (usulan berikutnya)
 
 Kalibrasi `geoRef` bawaan: ±30 m (dari kisi koordinat Google Earth). Bisa diperbaiki dengan dua titik ukur GPS di lapangan.

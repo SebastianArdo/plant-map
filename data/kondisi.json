@@ -99,6 +99,27 @@
    ],
    "geofence": {
     "r": 50
+   },
+   "plan": {
+    "nextPM": {
+     "date": "2026-11-25",
+     "title": "Contoh: PM bulanan girth gear & pinion"
+    },
+    "pic": "202 MEC 4 · 242 ELM 4",
+    "parts": [
+     {
+      "name": "Contoh: support roller bearing",
+      "stock": 2,
+      "min": 2,
+      "unit": "pcs"
+     },
+     {
+      "name": "Contoh: thermocouple shell",
+      "stock": 1,
+      "min": 4,
+      "unit": "pcs"
+     }
+    ]
    }
   },
   {
@@ -183,6 +204,21 @@
    ],
    "geofence": {
     "r": 50
+   },
+   "plan": {
+    "nextPM": {
+     "date": "2026-11-22",
+     "title": "Contoh: PM mingguan impeller breaker"
+    },
+    "pic": "202 MEC 4",
+    "parts": [
+     {
+      "name": "Contoh: hammer impeller breaker",
+      "stock": 12,
+      "min": 8,
+      "unit": "pcs"
+     }
+    ]
    }
   },
   {
@@ -275,6 +311,21 @@
    ],
    "geofence": {
     "r": 50
+   },
+   "plan": {
+    "nextPM": {
+     "date": "2026-11-21",
+     "title": "Contoh: inspeksi contact clamp & air pendingin"
+    },
+    "pic": "242 ELM 3 · 243 INS 3",
+    "parts": [
+     {
+      "name": "Contoh: contact clamp",
+      "stock": 3,
+      "min": 2,
+      "unit": "pcs"
+     }
+    ]
    }
   },
   {
@@ -745,7 +796,14 @@
      "ua": 90.8,
      "eu": 85.8
     }
-   ]
+   ],
+   "pmCompliance": 91.5,
+   "backlog": {
+    "lt7": 4,
+    "d7_30": 2,
+    "gt30": 1
+   },
+   "late": 1
   },
   {
    "line": "Line 3",
@@ -790,7 +848,14 @@
      "ua": 96.9,
      "eu": 89.8
     }
-   ]
+   ],
+   "pmCompliance": 88.0,
+   "backlog": {
+    "lt7": 6,
+    "d7_30": 3,
+    "gt30": 2
+   },
+   "late": 2
   },
   {
    "line": "Line 4",
@@ -835,7 +900,14 @@
      "ua": 96.1,
      "eu": 90.9
     }
-   ]
+   ],
+   "pmCompliance": 94.2,
+   "backlog": {
+    "lt7": 5,
+    "d7_30": 1,
+    "gt30": 0
+   },
+   "late": 0
   }
  ],
  "note": "Semua angka pada file ini adalah contoh, bukan kondisi atau kinerja plant yang sebenarnya. Target, waktu/jumlah breakdown, respons/pemulihan, RCA dan geofence juga contoh.",
@@ -849,5 +921,19 @@
   "resp": 30,
   "recov": 8,
   "_catatan": "Contoh target. Target sebenarnya ditetapkan Manajemen/Engineer di CMMS (FR-KPI-06)."
- }
+ },
+ "priority": [
+  {
+   "system": "Rotary Kiln 4",
+   "reason": "Contoh: Machine-Critical · maintenance on · RCA terlambat"
+  },
+  {
+   "system": "Electric Smelting Furnace 3",
+   "reason": "Contoh: Machine-Critical · 1 WO CM belum dimulai · RCA terbuka"
+  },
+  {
+   "system": "Rotary Dryer 4",
+   "reason": "Contoh: 1 WO CM belum dimulai · memasok 2 Line"
+  }
+ ]
 }

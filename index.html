@@ -1040,6 +1040,61 @@ body.ui5 #card:not(.notes) .cnote{display:none!important}
 /* v3.74 sembunyikan UI sampai tertata */
 header#panel,#vrail,#card{transition:opacity .25s ease}
 body:not(.uiready) header#panel,body:not(.uiready) #vrail,body:not(.uiready) #card{opacity:0!important;pointer-events:none!important}
+
+/* v3.75 visual */
+.siml.cmn{margin-top:-22px}
+@keyframes bdblink{0%,100%{box-shadow:0 0 0 0 rgba(255,59,59,.0)}50%{box-shadow:0 0 0 6px rgba(255,59,59,.45)}}
+.siml.bdl{animation:bdblink 1.2s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.siml.bdl{animation:none}}
+body.ui4 .ui4chips{grid-template-columns:repeat(5,1fr)}
+body.night .lbl{background:rgba(8,10,14,.86)}
+
+/* v3.76 data & deskripsi */
+.ui6more{background:none;border:0;padding:0;color:#8cc4ff;font:600 12.5px var(--body);cursor:pointer}
+.ui6full{display:block;margin-top:6px;color:var(--muted);font-size:13px}
+.ui6cmp,.ui6fm,.ui6plan,.ui6lines{margin:8px 0 10px}
+.ui6scr{overflow-x:auto}
+.ui6tab{width:100%;border-collapse:collapse;font-size:12px}
+.ui6tab th,.ui6tab td{padding:5px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.ui6tab tr:first-child th{font:600 11px var(--mono,monospace);letter-spacing:.06em;color:var(--muted)}
+.ui6tab tr:first-child th.me{color:#ffb070}
+.ui6tab th{font-weight:600;color:var(--fg);white-space:nowrap}
+.ui6tab td.me{background:rgba(255,138,61,.08);color:#fff}
+.ui6tab td.q{color:#e0b440}
+.ui6miss{margin:6px 0 0;font-size:12px;color:#e0b440}
+.ui6fm summary{cursor:pointer;font:600 12.5px var(--body);padding:6px 0}
+.ui6fmn{margin:2px 0 6px;font-size:12px;color:var(--muted)}
+.ui6fmt th{white-space:normal}
+.ui6dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:4px 0;font-size:12.5px}
+.ui6dl dt{color:var(--muted)}.ui6dl dd{margin:0}.ui6dl dd.q{color:var(--muted);font-style:italic}
+.ui6part{display:flex;justify-content:space-between;gap:8px}.ui6part b{font-weight:600;white-space:nowrap}.ui6part.low b{color:#ff7b6b}
+.ui6lt td.bad{color:#ff7b6b;font-weight:600}
+.ui6wait{margin:4px 0 8px;font-size:12px;color:var(--muted);font-style:italic}
+.ui6pri{margin:4px 0 8px;padding-left:20px;display:flex;flex-direction:column;gap:5px;font-size:12.5px}
+.ui6pri button{background:none;border:0;padding:0;color:var(--fg);font:700 12.5px var(--body);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.ui6pri span{display:block;color:var(--muted);font-size:12px}
+.ui6cap{display:flex;flex-wrap:wrap;gap:4px 18px;align-items:baseline;margin:0 0 6px;padding:6px 10px;border:1px solid var(--line);border-radius:4px;background:#12171b;font-size:12px}
+.ui6cap b{font:600 11px var(--mono,monospace);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);width:100%}
+.ui6cap i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}.ui6cap i.l4{background:#4aa8ff}.ui6cap i.l2{background:#5cb874}.ui6cap i.l3{background:#e8a23c}
+.ui6cap em{color:var(--muted);font-style:normal}
+.ui6cap small{width:100%;color:var(--muted);font-size:11px}
+.pf.pfui:not(.notes) .ui6cap small{display:none}
+
+/* v3.77 */
+#cSpec.ui6dup,.ksec.ui6dup{display:none!important}
+#cKpi{display:none!important}
+.rgsys button.rgpr{width:100%;margin:0;padding:5px 2px;background:none;border:0;border-bottom:1px solid rgba(255,255,255,.05);border-radius:0;color:inherit;text-align:left;cursor:pointer;font:inherit}
+.rgsys button.rgpr:hover span{color:#8cc4ff}
+.rgsys button.rgpr:focus-visible{outline:2px solid #8cc4ff;outline-offset:1px}
+.rgsys .trk i.off{background:#e8584a}
+.rgsys .trk i.cm{background:#e8c547}
+.ui6nt{margin:6px 0 0;font-size:12px;line-height:1.45;color:#cfd5d8}
+.pfkv{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:0 0 4px;font-size:12.5px;line-height:1.4}
+.pfkv dt{color:var(--muted);font-size:11.5px}
+.pfkv dd{margin:0;min-width:0;color:#e7e9ea}
+.pfkvn{font-size:11.5px!important;color:#b8c2c8}
+.pfkvm{font-size:11.5px!important;color:#e0c068}
+.pfcapx{display:none!important}
 </style>
 
 <div id="scene"></div>
@@ -1047,7 +1102,7 @@ body:not(.uiready) header#panel,body:not(.uiready) #vrail,body:not(.uiready) #ca
 
 <header id="panel">
   <div class="top">
-    <div style="display:flex;flex-direction:column;gap:6px"><span class="tag">UBPN Sultra · Pomalaa · Schematic v3.74</span><h1>FeNi Plant Pomalaa</h1></div>
+    <div style="display:flex;flex-direction:column;gap:6px"><span class="tag">UBPN Sultra · Pomalaa · Schematic v3.77</span><h1>FeNi Plant Pomalaa</h1></div>
     <div class="ctrl topb"><button id="helpB" type="button" aria-expanded="false" aria-controls="helpM" aria-label="Bantuan dan glosarium" title="Bantuan dan glosarium">?</button><button id="infoB" type="button" aria-expanded="false" aria-controls="infoM" aria-label="Tentang peta ini" title="Tentang peta ini">i</button><button id="moreB" type="button" aria-expanded="false" aria-controls="moreM" aria-label="Menu lainnya" title="Lainnya">⋯</button><button id="toggle" type="button">Menu</button></div>
   </div>
   <div class="infobox helpbox" id="helpM" hidden><b>Cara pakai</b>
@@ -1185,7 +1240,7 @@ const CAT={
   hall:{n:"Refinery & casting",c:"#9b8ad0"},
   ore:{n:"Gudang bijih",c:"#c07a4a"},
   elec:{n:"Ruang listrik & kontrol",c:"#5fd3c6"},
-  conv:{n:"Belt conveyor",c:"#e0e4e6"},
+  conv:{n:"Belt conveyor",c:"#93a6b5"},
   site:{n:"Pelabuhan & site",c:"#b6a4f0"},
   crane:{n:"Crane (OHC & HCC)",c:"#e8c547"},
   ccar:{n:"Container car",c:"#d98fb0"}
@@ -1632,12 +1687,12 @@ function build(a){a.subs=[];a.floorSel=0;
   if(a.shape==="yard"){const sl=new THREE.Mesh(new THREE.BoxGeometry(a.w,.08,a.d),mat(0x4a3a2e));sl.position.y=.04;g.add(sl);
     const pm=new THREE.MeshLambertMaterial({color:0x6b4a32});for(let i=0;i<5;i++){const c=new THREE.Mesh(new THREE.ConeGeometry(a.d*.35,a.d*.3,8),pm);c.position.set(-a.w/2+a.w*(i+.5)/5,.08+a.d*.15,0);g.add(c);}
     const b=new THREE.Mesh(new THREE.BoxGeometry(a.w,.06,.12),accent);b.position.set(0,.1,-a.d/2);g.add(b);top=a.d*.35;}
-  if(a.shape==="conv"){const CY=.55,cm=mat(0xd7dbde),pm=dark;
+  if(a.shape==="conv"){const CY=.55,cm=mat(0x7f8a91),pm=dark;
     const P=a.pts.map(([x,y])=>new THREE.Vector3(toX(x)-toX(a.px),CY,toZ(y)-toZ(a.py)));
     for(let i=1;i<P.length;i++){const p0=P[i-1],p1=P[i],l=p0.distanceTo(p1);if(l<.01)continue;
       const m=new THREE.Mesh(new THREE.BoxGeometry(l,.1,.14),cm);m.position.copy(p0).lerp(p1,.5);m.rotation.y=-Math.atan2(p1.z-p0.z,p1.x-p0.x);g.add(m);
       const b=new THREE.Mesh(new THREE.BoxGeometry(l,.04,.15),accent);b.position.copy(m.position).setY(CY+.07);b.rotation.y=m.rotation.y;g.add(b);
-      const n=Math.max(1,Math.floor(l/1.6));for(let k=0;k<=n;k++){const q=p0.clone().lerp(p1,k/n);const po=new THREE.Mesh(new THREE.BoxGeometry(.06,CY,.06),pm);po.position.set(q.x,CY/2,q.z);g.add(po);}}
+      const n=Math.max(1,Math.floor(l/3.2));for(let k=0;k<=n;k++){const q=p0.clone().lerp(p1,k/n);const po=new THREE.Mesh(new THREE.BoxGeometry(.06,CY,.06),pm);po.position.set(q.x,CY/2,q.z);g.add(po);}}
     P.forEach((p,i)=>{if(i===0||i===P.length-1||1){const t=new THREE.Mesh(new THREE.BoxGeometry(.35,CY+.35,.35),mat(0x8a9196));t.position.set(p.x,(CY+.35)/2,p.z);g.add(t);}});
     (a.hop||[]).forEach(([x,y])=>{const h=new THREE.Mesh(new THREE.CylinderGeometry(.35,.12,.5,4),mat(0xb8a68c));h.position.set(toX(x)-toX(a.px),CY+.35,toZ(y)-toZ(a.py));g.add(h);});
     top=CY+.3;}
@@ -1739,7 +1794,7 @@ function select(a,go){
   document.getElementById('cDesc').textContent=a.desc+(a.m?" Measured length: "+a.m.toFixed(2)+" m (your Google Earth measurement).":"");
   setCrit(a);renderExtras(a,null);cClose.hidden=false;afterSelect(a,null);
   if(go){const t=a.group.position.clone();const off=cam.position.clone().sub(controls.target).normalize().multiplyScalar(26);
-    fly={t0:controls.target.clone(),p0:cam.position.clone(),t1:t,p1:t.clone().add(off).setY(Math.max(14,t.y+off.y)),k:0};}
+    fly={t0:controls.target.clone(),p0:cam.position.clone(),t1:t,p1:t.clone().add(off).setY(Math.max(14,t.y+off.y)),k:0};try{if(window.VIS2)VIS2.afterSel(a);}catch(e){}}
   if(typeof FL!=='undefined'&&stepsEl)stepsEl.hidden=!(FL&&FL.ids.has(a.id));
   if(innerWidth<=640)panel.classList.add('collapsed');
 }
@@ -1953,7 +2008,7 @@ function layoutLabels(){
   const dC=cam.position.distanceTo(controls.target);if(!layoutLabels.d0)layoutLabels.d0=dC;const minP=(LBM==='auto'&&!FL&&!IMP&&!K.on&&!PL.on)?(dC>layoutLabels.d0*.8?66:dC>layoutLabels.d0*.45?50:0):0;
   A.forEach(a=>{let s=null;if(on&&!a.hidden&&!a.cut&&(!window.WALKON||a===sel||cam.position.distanceTo(a.group.position)<(a.shape==='conv'?5:13))&&(a===sel||(PRI[a.cat]||40)>=minP)&&(!FL||(FL.ids.has(a.id)&&!(FL.tag&&FL.tag.has(a.id)&&a!==sel)))&&(!IMP||IMP.all.has(a.id)||a===sel)&&(!K.on||critKey(a)!=='no'||a===K.cur)&&(!KX.on||a===KX.a)&&(!SX.on||a===SX.a)&&(!PX.on||a===PX.a)){tmp.copy(a.group.position);tmp.y=a.top+.6;s=proj(tmp);}
     if(!s){a.lbl.hidden=true;return;}
-    cand.push({el:a.lbl,x:s[0],y:s[1],z:s[2],w:a.lbl._w||a.id.length*8+12,h:a.lbl._h||20,pri:(a===sel?2000:0)+(PRI[a.cat]||40)-(a.idle?8:0),b:1});});
+    cand.push({el:a.lbl,x:s[0],y:s[1],z:s[2],w:a.lbl._w||a.id.length*8+12,h:a.lbl._h||20,pri:(a===sel?2000:0)+(PRI[a.cat]||40)-(a.idle?8:0)+lblBoost(a),b:1});});
   const fA=K.on||KX.on||PX.on?null:SX.on?(SX.view==='3d'?SX.a:null):selSub?selSub.a:(sel&&sel.subG&&sel.subG.visible?sel:nearA);
   SUBS.forEach(s=>{const a=s.a;let p=null;if(on&&a===fA&&a.subG.visible&&s.meshes[0].visible&&(!a.floorSel||!s.fl||s.fl===a.floorSel))p=proj(s.wp);
     if(!p){s.lbl.hidden=true;return;}
@@ -4032,7 +4087,7 @@ function focusLine(k){if(k==='all'){const b=boxCam(PW_.x0,PW_.y0,PW_.x1,PW_.y1);
   const g=GR['C'+k.slice(1)],p=GR[k==='L3'?'P3':'P4'],r=GR[k==='L4'?'R4':'R2'];flyTo(boxCam(-20,Math.min(p.Y,g.Y)-620,3420,Math.max(p.Y,g.Y,r.Y)+130,.6));}
 function stepCam(){if(!camAnim)return;camAnim.k=Math.min(1,camAnim.k+.06);const e=sm(camAnim.k);S=lerp(camAnim.s0,camAnim.s1,e);OX=lerp(camAnim.ox0,camAnim.ox1,e);OY=lerp(camAnim.oy0,camAnim.oy1,e);if(camAnim.k>=1)camAnim=null;}
 const capEl=document.getElementById('pfCap');
-function renderCap(){capEl.hidden=MODE!=='anim';if(MODE!=='anim')return;capEl.innerHTML='';const TLs=tourList(),s=stp>=0?TLs[stp]:null;
+function renderCap(){const det=MODE==='anim'&&quiet&&selId&&BI[selId];capEl.hidden=!det;capEl.innerHTML='';if(det){const nav=E('div','pfcn'),d=E('button','','Detail');d.type='button';d.onclick=()=>{quiet=false;renderSide();renderCap();};nav.append(E('span','pfcp',BI[selId].n),d);capEl.append(nav);}return;const TLs=tourList(),s=stp>=0?TLs[stp]:null;
   const nav=E('div','pfcn');const pv=E('button','','◀');pv.type='button';pv.setAttribute('aria-label','Langkah sebelumnya');pv.onclick=()=>{stopTour();goStep(stp<=0?TLs.length-1:stp-1);};
   const nx=E('button','','▶');nx.type='button';nx.setAttribute('aria-label','Langkah berikutnya');nx.onclick=()=>{stopTour();goStep(stp<0?0:(stp+1)%TLs.length);};
   const au=E('button','',autoT?'Hentikan tur':'Tur '+LN[TL()].n);au.type='button';au.setAttribute('aria-pressed',!!autoT);au.onclick=()=>autoT?stopTour():startTour();
@@ -4077,12 +4132,13 @@ function renderSide(){side.innerHTML='';const b=selId&&BI[selId];const was=side.
   else{side.append(hd,E('h3','',b.n));}if(!blt&&a&&b.item!==a.id){const inb=typeof PM==='undefined'||PM.itemsOf(b.id).includes(a.id);side.append(E('p','pfcur',(inb?'':a.cat==='conv'?'Belt menuju blok ini: ':'Terkait blok ini: ')+(a.disp||a.id)));}
   if(a){const ch=E('div','pfchips');const k=critKey(a);if(f.status)ch.append(E('span','status '+statusClass(f.status),stID(f.status)));if(k!=='no'){const s=E('span','status crit c-'+k,CRIT[k].n);ch.append(s);}if(ch.children.length)side.append(ch);}
   if(a&&window.COND&&COND.brief){try{const br=COND.brief(a);if(br)side.append(br);}catch(e){}}
-  side.append(E('p','',(a&&(f.fn||a.desc))||b.d||b.sub));
-  {const sp=PSPEC[b.id];if(sp){const w=E('div','pfspec');w.append(E('b','','Spesifikasi dari dokumen'));sp[0].forEach(t=>w.append(E('p','',t)));w.append(E('small','',sp[1]));side.append(w);}}
-  if(f.data)side.append(E('p','pfdat',f.data));
+  side.append(E('p','pfdesc',(a&&((typeof SHORTS!=='undefined'&&SHORTS[a.id])||firstSent(f.fn||a.desc)))||b.d||b.sub));
+  {let kv=null;try{kv=a&&window.UI6&&UI6.specKV?UI6.specKV(a):null;}catch(e){}const sp=PSPEC[b.id],w=E('div','pfspec');w.append(E('b','','Spesifikasi'));
+    if(kv){const dl=E('dl','pfkv');kv.rows.forEach(([k,v])=>dl.append(E('dt','',k),E('dd','',v)));w.append(dl);kv.notes.forEach(t=>w.append(E('p','pfkvn',t)));if(kv.miss.length)w.append(E('p','pfkvm','Belum ada data: '+kv.miss.join(', ')+'.'));w.append(E('small','','Sumber: gambar plant, PPT Orientation FeNi Plant, dokumen UBPNK, hasil ukur Google Earth. Sama dengan tabel di kartu peta 3D (tab Tentang).'));side.append(w);}
+    else if(sp){sp[0].forEach(t=>w.append(E('p','',t)));w.append(E('small','',sp[1]));side.append(w);}
+    else if(a&&f.data){f.data.split(' · ').forEach(t=>w.append(E('p','',t)));w.append(E('small','','Sumber: data kartu peralatan.'));side.append(w);}}
+  
   if(a){const acts=E('div','pfacts');const go=E('button','','Lihat di peta 3D');go.type='button';go.onclick=()=>{close(true);select(a,true);};acts.append(go);
-    if(a.cat==='rk'&&a.shape==='drum'){const x=E('button','','Cara kerja kiln');x.type='button';x.onclick=()=>{close(true);select(a,true);KX.open(a);};acts.append(x);}
-    if(PX.has(a)){const x=E('button','',a.cat==='rd'?'Cara kerja dryer':'Cara kerja furnace');x.type='button';x.onclick=()=>{close(true);select(a,true);PX.open(a);};acts.append(x);}
     if(SX.typeOf(a)&&critKey(a)!=='no'){const x=E('button','','Scope M/E');x.type='button';x.onclick=()=>{close(true);select(a,true);SX.open(a);};acts.append(x);}
     side.append(acts);}
   if(blt){const sib=MODE==='anim'&&selSt&&selSt.it&&selSt.it.includes(a.id)?selSt.it:[];if(sib.length>1){side.append(E('h4','','Belt di ruas ini (berurutan)'));const u=E('ul');sib.forEach(id=>{const o=byId(id),li=E('li','pflink pfit'+(o===a?' on':''),o.disp||o.id);li.onclick=()=>{selItem={b:b.id,id};renderSide();};u.append(li);});side.append(u);}return;}
@@ -4139,7 +4195,7 @@ const v=new THREE.Vector3(),reduce=matchMedia('(prefers-reduced-motion: reduce)'
 function loop(){
   requestAnimationFrame(loop);frame++;
   if(fly&&PL.on)planFix();
-  if(fly){fly.k=reduce?1:Math.min(1,fly.k+.035);const e=1-Math.pow(1-fly.k,3);
+  if(fly){fly.k=reduce?1:Math.min(1,fly.k+(fly.spd||.035));const e=1-Math.pow(1-fly.k,3);
     if(fly.orb){const o=fly.orb,an=o.a0+(o.a1-o.a0)*e;controls.target.copy(o.t);cam.position.set(o.t.x+Math.sin(an)*o.h,o.t.y+o.y,o.t.z+Math.cos(an)*o.h);}
     else{controls.target.lerpVectors(fly.t0,fly.t1,e);cam.position.lerpVectors(fly.p0,fly.p1,e);}
     if(fly.k>=1)fly=null;}
@@ -4305,11 +4361,11 @@ function fillInfo(a){const f=INFO[a.id],dl=$('cInfo');dl.innerHTML='';const add=
 let PROVT='';
 function fillSpec(a){const f=INFO[a.id],dl=$('cSpec');dl.innerHTML='';if(!f||!f.data)return;specRows(f.data).forEach(([l,v])=>{const dt=mk('dt','',l||'·'),dd=hl(mk('dd',''),v);if(!l)dt.className='nol';dl.append(dt,dd);});}
 function fillHist(a){const f=INFO[a.id],ol=$('cHist');ol.innerHTML='';if(!f||!f.hist)return;f.hist.split(' · ').forEach(x=>{const m=x.match(/^(\d{4})\s*(.*)$/);const li=mk('li');li.append(mk('b','',m?m[1]:'—'),mk('span','',m?m[2]:x));ol.append(li);});}
-function summary(a,s){const sm=$('cSum'),kp=$('cKpi');kp.innerHTML='';sm.className='csum';
+function summary(a,s){setTimeout(()=>{try{if(window.UI6)UI6.refreshCard();}catch(e){}},0);const sm=$('cSum'),kp=$('cKpi');kp.innerHTML='';sm.className='csum';
   if(!a||s){sm.hidden=true;kp.hidden=true;return;}
   const c=CUR[a.id],f=INFO[a.id];let html,auto=false;
   if(EQM[a.id]&&EQM[a.id].sum)html=marks(EQM[a.id].sum);else if(c)html=marks(c.s);else{const t=firstSent(f?f.fn:a.desc);if(!t){sm.hidden=true;}auto=true;html=esc(t);}
-  sm.hidden=!html;sm.innerHTML=html||'';if(auto&&html){sm.classList.add('auto');sm.title='Ringkasan otomatis dari data yang ada; belum disusun ulang.';}
+  sm.hidden=!html;sm.innerHTML=html||'';try{shortSum(a,sm,html);}catch(e){}if(auto&&html){sm.classList.add('auto');sm.title='Ringkasan otomatis dari data yang ada; belum disusun ulang.';}
   const k=c?c.k:autoKpi(f&&f.data);kp.hidden=!k.length;k.forEach(([v,l,u])=>{const d=mk('div','kp'+(u?' unsure':'')+(v.length>8?' long':''));const b=mk('b','',v),sp=mk('span');sp.innerHTML=marks(l);d.append(b,sp);if(u)d.title='Masih perlu dikonfirmasi';kp.append(d);});}
 function header(a,s){const lb=$('cLinkB');lb.hidden=!a;if(a){lb.onclick=()=>{const h='#'+slugOf(a,s);const done=()=>{lb.classList.add('ok');lb.title='Tautan disalin';setTimeout(()=>{lb.classList.remove('ok');lb.title='Salin tautan ke '+(s?s.n:(a.disp||a.id));},1500);};
     try{navigator.clipboard.writeText(location.href.split('#')[0]+h).then(done,()=>{});}catch(e){}};lb.title='Salin tautan ke '+(s?s.n:(a.disp||a.id));}
@@ -5310,7 +5366,7 @@ const FEED=(()=>{
     if(Array.isArray(d.wo))d.wo.forEach(w=>{const o=slot(w.system||w.equipment||w.sistem);if(o)o.wo.push(woN(w));});
     const LN=[],ln=d.lines,lnm=k=>{const m=String(k).match(/\d+/);return m?'Line '+m[0]:String(k);},lput=(k,r)=>{if(!r||typeof r!=='object')return;const M=mN(r.metrics||r.kinerja||r);if(M.length)LN.push({name:lnm(r.line||r.name||k),metrics:M});};
     if(Array.isArray(ln))ln.forEach(r=>lput('',r));else if(ln&&typeof ln==='object')Object.entries(ln).forEach(([k,r])=>lput(k,r));
-    COND.set(out,{targets:(d.targets&&typeof d.targets==='object')?d.targets:null,lines:LN,sample:!!d.sample,updated:d.updated||d.updatedAt||'',name:d.source||'CMMS',unmapped:un});last=d;info={via,at:Date.now(),err:''};return {mapped:Object.keys(out).length,unmapped:un};}
+    COND.set(out,{targets:(d.targets&&typeof d.targets==='object')?d.targets:null,lines:LN,sample:!!d.sample,updated:d.updated||d.updatedAt||'',name:d.source||'CMMS',unmapped:un});last=d;try{if(window.UI6)UI6.set(d);}catch(e){}info={via,at:Date.now(),err:''};return {mapped:Object.keys(out).length,unmapped:un};}
   async function pull(){if(!C.dataUrl)return;try{const r=await fetch(C.dataUrl,{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);apply(await r.json(),'url');okOnce=true;}catch(e){info.err=String(e&&e.message||e);if(okOnce)console.warn('[FEED] gagal memperbarui data',e);}}
   const post=o=>{try{if(C.parentOrigin&&parent!==window)parent.postMessage(o,C.parentOrigin);}catch(e){}};
   addEventListener('message',ev=>{const m=ev.data;if(!m||typeof m!=='object'||typeof m.type!=='string'||m.type.indexOf('feni:')!==0)return;if(C.parentOrigin&&ev.origin!==C.parentOrigin)return;
@@ -5530,13 +5586,15 @@ const RANGE=(()=>{
     if(ks.length){box.append(mk('span','ksec','Per Line · '+lab()));const t=mk('table','ltab'),hr=mk('tr','');['Line','PM','CM','OFF','Jam OFF'].forEach(x=>hr.append(mk('th','',x)));t.append(hr);
       ks.forEach(k=>{const a=agg(L[k]),r=mk('tr','');[k.replace(/^LINE /,'Line '),a.pm,a.cm,a.bdn,nf(a.bdh)].forEach(x=>r.append(mk('td','',String(x))));t.append(r);});const w=mk('div','ltwrap');w.append(t);box.append(w);}
     // Sistem dengan jam OFF / CM terbanyak
-    const S=bySys(rs.filter(r=>r.id)),top=Object.entries(S).map(([k,v])=>[k,agg(v)]).sort((p,q)=>q[1].bdh-p[1].bdh||q[1].cm-p[1].cm).filter(x=>x[1].cm||x[1].bdh).slice(0,6);
-    if(top.length){box.append(mk('span','ksec','Sistem dengan OFF / CM terbanyak'));top.forEach(([id,a])=>{const it=byId(id),b=mk('button','crow');b.type='button';const d=mk('i','');d.style.background=a.bdh?'#ff6b5a':'#e8c547';
-      b.append(d,mk('b','',it?(it.disp||it.id):id),mk('span','',[a.cm+' CM',a.bdn?a.bdn+'× OFF · '+nf(a.bdh)+' j':''].filter(Boolean).join(' · ')));b.onclick=()=>{if(it){select(it,true);try{COND.openTab();}catch(e){}}};box.append(b);});}
+    const S=bySys(rs.filter(r=>r.id)),top=Object.entries(S).map(([k,v])=>[k,agg(v)]).sort((p,q)=>q[1].bdh-p[1].bdh||q[1].cm-p[1].cm).filter(x=>x[1].cm||x[1].bdh).slice(0,5);
+    if(top.length){box.append(mk('span','ksec','Sistem dengan jam OFF terbanyak'));const w=mk('div','rgpar rgsys'),mh=Math.max(...top.map(x=>x[1].bdh)),mc=Math.max(...top.map(x=>x[1].cm));
+      top.forEach(([id,a])=>{const it=byId(id),r=mk('button','rgpr');r.type='button';const tr=mk('div','trk'),b=mk('i',a.bdh?'off':'cm');b.style.width=(mh>0?100*a.bdh/mh:100*a.cm/(mc||1))+'%';tr.append(b);
+        r.append(mk('span','',it?(it.disp||it.id):id),tr,mk('b','',(a.bdn?nf(a.bdh)+' j OFF ('+a.bdn+'×)':'0 j OFF')+' · '+a.cm+' CM'));r.title=(it?(it.disp||it.id):id)+': '+a.bdn+'× OFF, total '+nf(a.bdh)+' jam; '+a.cm+' aktivitas CM. Klik untuk membuka kartunya.';
+        r.onclick=()=>{if(it){select(it,true);try{COND.openTab();}catch(e){}}};w.append(r);});box.append(w);}
     {const P=pareto(rs.filter(r=>r.t==='CM'),r=>r.sub?r.sys+' · '+r.sub:'',5);if(P.length){box.append(mk('span','ksec','Sub-sistem dengan CM terbanyak'));box.append(bars(P));}}
     const un=[...new Set(rs.filter(r=>!r.id).map(r=>r.sys))];if(un.length)box.append(mk('p','mnote warn',un.length+' Sistem di data belum punya lokasi di peta ('+rs.filter(r=>!r.id).length+' aktivitas): '+un.slice(0,6).join(', ')+(un.length>6?', …':'')+'.'));
     {const gs=[...new Set(rs.filter(guessed).map(r=>r.sys==='Building'?'Building ('+r.sub+')':r.sys))];if(gs.length){const p=mk('p','mnote warn',gs.length+' Sistem/sub-sistem memakai lokasi PERKIRAAN (perlu konfirmasi): '+gs.join(', ')+'.');p.title=Object.entries(GUESS).map(([k,v])=>k+' → '+v[0]+' ('+v[1]+')').join('\n');box.append(p);}}
-    {const b=mk('button','rgcol',CM==='rw'?'Peta sedang diwarnai menurut riwayat':'▶ Warnai peta menurut riwayat ini');b.type='button';b.onclick=()=>{try{setCM(CM==='rw'?'cat':'rw');}catch(e){}draw();};box.append(b);}
+    {const b=mk('button','rgcol',CM==='rw'?'Peta sedang diwarnai menurut riwayat':'▶ Warnai Sistem di peta menurut riwayat ini');b.type='button';b.onclick=()=>{try{setCM(CM==='rw'?'cat':'rw');}catch(e){}draw();};box.append(b);}
     box.append(mk('p','mnote','Sumber: '+(D.note||'log aktivitas CMMS')+' "Sistem OFF" = aktivitas CM dengan Sistem berstatus Off, digabung bila tumpang tindih. Angka ini perkiraan dari log aktivitas, bukan rumus resmi CMMS (BRD §6.13).'));}
   // bagian di kartu peralatan
   const sec=mk('div','xsec rgcard');
@@ -5916,6 +5974,144 @@ window.SNAP=SNAP;
 
 /* v3.74: tandai UI siap setelah semua penataan (ui2–ui5) berjalan; cadangan 6 detik bila ada yang gagal */
 (()=>{const done=()=>document.body.classList.add('uiready');const t0=Date.now();const iv=setInterval(()=>{const b=document.body.classList;if((b.contains('ui4')&&b.contains('ui5'))||Date.now()-t0>6000){clearInterval(iv);setTimeout(done,60);}},100);})();
+
+/* ---- v3.75: visual — prioritas label untuk peralatan bermasalah, denyut merah BREAKDOWN, bayangan lembut,
+   conveyor seperti galeri baja, mode malam, kamera melayang halus dan sedikit memutar saat memilih peralatan. ---- */
+function lblBoost(a){try{if(window.COND&&COND.active&&COND.active()){const s=COND.state(a.id);if(s&&s!=='run'&&s!=='mon')return s==='bd'?900:600;if(COND.cmOpen&&COND.cmOpen(a.id))return 300;}}catch(e){}return 0;}
+const VIS2=(()=>{
+  const out={};
+  // 3) bayangan lembut
+  try{renderer.shadowMap.type=THREE.PCFSoftShadowMap;sun.shadow.bias=-.0004;sun.shadow.normalBias=.02;Object.assign(sun.shadow.camera,{left:-72,right:72,top:72,bottom:-72});sun.shadow.camera.updateProjectionMatrix();
+    scene.traverse(o=>{if(o.material){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>m.needsUpdate=true);}});}catch(e){console.warn('VIS2 shadow',e);}
+  // 2) denyut merah pada peralatan BREAKDOWN
+  const pulsed=new Set();
+  function pulse(t){A.forEach(a=>{if(!a.accent||a===sel)return;let bd=false;try{bd=COND.active()&&COND.state(a.id)==='bd';}catch(e){}
+    if(bd){const k=.25+.25*Math.sin(t*5);a.accent.emissive.setRGB(k,0,0);pulsed.add(a);}else if(pulsed.has(a)){a.accent.emissive.setRGB(0,0,0);pulsed.delete(a);}});}
+  // 5) mode malam
+  const hemi=scene.children.find(o=>o.isHemisphereLight);const base={hemi:hemi?hemi.intensity:.75,sun:sun.intensity,bg:scene.background.clone(),fog:scene.fog?scene.fog.color.clone():null};
+  let night=false,lamps=null,dim=[];
+  function buildLamps(){if(lamps)return;const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d'),g=x.createRadialGradient(32,32,1,32,32,31);g.addColorStop(0,'rgba(255,214,150,1)');g.addColorStop(.35,'rgba(255,190,110,.55)');g.addColorStop(1,'rgba(255,170,90,0)');x.fillStyle=g;x.fillRect(0,0,64,64);
+    const tex=new THREE.CanvasTexture(c),mt=new THREE.SpriteMaterial({map:tex,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending});lamps=new THREE.Group();
+    A.forEach(a=>{if(!a.group||a.idle||a.shape==='conv'||a.shape==='pin'||a.shape==='strip')return;const b=new THREE.Box3().setFromObject(a.group);if(!isFinite(b.min.x))return;const sx=b.max.x-b.min.x,sz=b.max.z-b.min.z;
+      const n=Math.max(1,Math.min(4,Math.round(Math.max(sx,sz)/6)));for(let i=0;i<n;i++){const s=new THREE.Sprite(mt);const f=(i+.5)/n;s.position.set(sx>sz?b.min.x+sx*f:b.max.x+.2,Math.min(b.max.y,4)+.3,sx>sz?b.max.z+.2:b.min.z+sz*f);s.scale.setScalar(1.6);s.raycast=()=>{};lamps.add(s);}});
+    lamps.visible=false;scene.add(lamps);}
+  function setNight(v){night=!!v;buildLamps();if(hemi)hemi.intensity=night?.32:base.hemi;sun.intensity=night?.12:base.sun;scene.background.copy(night?new THREE.Color(0x06080c):base.bg);if(scene.fog&&base.fog)scene.fog.color.copy(night?new THREE.Color(0x06080c):base.fog);
+    if(night){dim=[];scene.traverse(o=>{if(o.isMesh&&o.material&&o.material.isMeshBasicMaterial&&o.material.map&&o.material.blending!==THREE.AdditiveBlending&&!o.isSprite){dim.push([o.material,o.material.color.clone()]);o.material.color.multiplyScalar(.42);}});}
+    else{dim.forEach(([m,c])=>m.color.copy(c));dim=[];}
+    lamps.visible=night;document.body.classList.toggle('night',night);try{localStorage.setItem('feniNight',night?'1':'0');}catch(e){}if(btn)btn.setAttribute('aria-pressed',String(night));}
+  let btn=null;
+  // 6) kamera: lebih halus, lalu sedikit memutar setelah tiba
+  let orbitFor=null,touched=false;['pointerdown','wheel','keydown'].forEach(ev=>addEventListener(ev,()=>{touched=true;},{passive:true}));
+  function afterSel(a){touched=false;orbitFor=a;}
+  let wasFly=false;
+  function camTick(){if(fly&&!fly.orb&&!fly.spd&&orbitFor)fly.spd=.022;
+    if(wasFly&&!fly&&orbitFor&&!touched&&sel===orbitFor&&!window.WALKON&&!matchMedia('(prefers-reduced-motion: reduce)').matches){const t=controls.target.clone(),d=cam.position.clone().sub(t),h=Math.hypot(d.x,d.z),a0=Math.atan2(d.x,d.z);fly={orb:{t,a0,a1:a0+.32,h,y:d.y},k:0,spd:.0055};orbitFor=null;}
+    if(touched&&fly&&fly.orb&&fly.spd===.0055)fly=null;
+    if(!fly&&!wasFly)orbitFor=orbitFor&&sel===orbitFor?orbitFor:null;wasFly=!!fly;}
+  out.afterSel=afterSel;
+  function frame(){requestAnimationFrame(frame);const t=performance.now()/1000;try{pulse(t);}catch(e){}try{camTick();}catch(e){}}
+  setTimeout(()=>{requestAnimationFrame(frame);
+    // tombol Malam di baris lapisan tab Peta
+    const row=document.getElementById('ui4chips');if(row){btn=document.createElement('button');btn.type='button';btn.id='vNight';btn.title='Mode malam: peta gelap, lampu plant menyala (cocok untuk layar besar)';btn.setAttribute('aria-label',btn.title);btn.setAttribute('aria-pressed','false');
+      btn.innerHTML='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><span>Malam</span>';btn.onclick=()=>setNight(!night);row.append(btn);}
+    let n0=false;try{n0=localStorage.getItem('feniNight')==='1';}catch(e){}if(n0)setNight(true);},4200);
+  out.setNight=setNight;Object.defineProperty(out,'night',{get:()=>night});return out;})();
+window.VIS2=VIS2;
+
+/* ---- v3.76: data & deskripsi.
+   1) ringkasan kartu satu kalimat + "Selengkapnya"; 2) tabel spesifikasi seragam per jenis mesin (bandingkan antar-Line);
+   3) rantai kapasitas desain per Line di diagram alir; 4) pola kerusakan umum (referensi industri, bukan data plant);
+   5) istilah baku di glosarium; 6–8) tempat data CMMS baru: PM compliance & backlog per Line, prioritas, perencanaan per alat. ---- */
+const SHORTS={RD4:'Mengeringkan bijih basah sebelum masuk kiln; memasok Line 4 dan Line 2.',RD3:'Mengeringkan bijih basah sebelum masuk kiln; memasok Line 3.',
+  RK4:'Mengkalsinasi campuran bijih–batubara menjadi calcine panas untuk ESF4.',RK2:'Mengkalsinasi campuran bijih–batubara menjadi calcine panas untuk ESF2.',RK3:'Mengkalsinasi campuran bijih–batubara menjadi calcine panas untuk ESF3.',
+  ESF4:'Melebur calcine dari RK4 dengan busur listrik menjadi logam FeNi dan slag.',ESF2:'Melebur calcine dari RK2 dengan busur listrik menjadi logam FeNi dan slag.',ESF3:'Melebur calcine dari RK3 dengan busur listrik menjadi logam FeNi dan slag.',
+  RD1:'Rotary dryer Line 1; saat ini tidak beroperasi.',RD2:'Rotary dryer desain awal Line 2; saat ini tidak beroperasi (bijih Line 2 dari RD4).',RK1:'Rotary kiln Line 1; saat ini tidak beroperasi.',
+  'Refinery 3':'Memurnikan logam FeNi dari ladle menjadi High Carbon Shot atau Low Carbon Shot.','Refinery 2':'Memurnikan logam FeNi dari ladle menjadi High Carbon Shot atau Low Carbon Shot.',
+  'Casting 3':'Menuang logam FeNi ke kolam granulasi menjadi shot, lalu shot dikeringkan, diayak dan dikantongi.','Casting 2':'Menuang logam FeNi ke kolam granulasi menjadi shot, lalu shot dikeringkan, diayak dan dikantongi.',
+  'HCC 4':'Mengangkat container calcine dari container car dan menuangkannya ke top bin ESF4.','HCC 2':'Mengangkat container calcine dari container car dan menuangkannya ke top bin ESF2.','HCC 3':'Mengangkat container calcine dari Container Car 3 dan menuangkannya ke top bin ESF3.',
+  STAHL:'Overhead crane di gedung casting & refinery; tugasnya belum tercatat.','DEMAG 2':'Overhead crane di gedung casting & refinery; tugasnya belum tercatat.','DEMAG 3':'Overhead crane di gedung casting & refinery; tugasnya belum tercatat.','DEMAG 4':'Overhead crane di gedung casting & refinery; tugasnya belum tercatat.',KONE:'Overhead crane di gedung casting & refinery; tugasnya belum tercatat.',
+  'No.4 Ore Mixing':'Menakar bijih kering, batubara dan aditif sesuai resep menjadi umpan kiln.','No.2 Ore Mixing':'Menakar bijih kering, batubara dan aditif sesuai resep menjadi umpan RK2.','No.3 Ore Mixing & Pelletizing':'Menakar bijih kering, batubara dan aditif menjadi umpan RK3; debu kiln dan dryer dipeletkan di sini.',
+  'No.4 Briquetting':'Mengubah debu kiln, debu dryer dan bijih halus menjadi briket untuk didaur ulang.','RK3 Exhaust Gas Treatment':'ESP penangkap debu off-gas RK3; debunya dikembalikan ke pelletizing.',
+  'Container Car 3':'Membawa calcine dari surge hopper RK3 ke gedung ESF3.','EMIP & MM':'Bengkel maintenance listrik (EMIP, sisi barat) dan mekanik (MM, sisi timur).'};
+function shortSum(a,sm,html){if(!a||!sm||!html)return;const t=SHORTS[a.id];if(!t)return;sm.innerHTML='';sm.append(document.createTextNode(t+' '));
+  const more=document.createElement('button');more.type='button';more.className='ui6more';more.textContent='Selengkapnya ▸';const full=document.createElement('span');full.className='ui6full';full.hidden=true;full.innerHTML=html;
+  more.onclick=()=>{full.hidden=!full.hidden;more.textContent=full.hidden?'Selengkapnya ▸':'Ringkas ▴';};sm.append(more,full);}
+const UI6=(()=>{const $=id=>document.getElementById(id),mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;};
+  // ---- 2) spesifikasi seragam (sumber: data kartu: gambar, PPT Orientation, dokumen UBPNK, hasil ukur) ----
+  const SP={
+    rd:{ids:['RD4','RD3'],rows:['Kapasitas','Kadar air masuk → keluar','Ukuran produk','Gas panas','Gas buang','Suhu produk','Panjang','Diameter','EP (aliran gas)','Bahan bakar','Daya motor utama'],
+      v:{RD4:['260 t/j','±33 → 22% (PPT) · ±34 → 21% (UBPNK)','≤ 30 mm','400–800 °C','170–200 °C','~70 °C','40,9 m (ukur; PPT ≈48 m, gambar ≈42 m)','≈5,2 m (PPT)','~6.000 Nm³/min','PC, MFO start-up','?'],
+         RD3:['130 t/j','±33 → 22% (PPT) · ±34 → 21% (UBPNK)','≤ 30 mm','400–800 °C','170–200 °C','?','20,7 m (ukur; PPT ≈41 m)','≈4,2 m (PPT)','~3.100 Nm³/min','PC, MFO start-up','?']}},
+    rk:{ids:['RK4','RK2','RK3'],rows:['Kapasitas desain','Target charge','Suhu discharge','Produk','Panjang','Diameter','Bahan bakar','Daya main drive','Kecepatan putar'],
+      v:{RK4:['90 t/j','80','669 °C','calcine LOI ≤ 1%','100,1 m','5,5 m','PC, MFO start-up','?','?'],RK2:['60 t/j','65','651 °C','calcine LOI ≤ 1%','80,5 m','5,5 m','PC, MFO start-up','?','?'],RK3:['130 t/j','100','658 °C','calcine LOI ≤ 1%','101,0 m (gambar 101,75 m)','5,5 m','PC, MFO start-up','?','?']},
+      n:'Zona suhu kiln (UBPNK hlm. 29, umum): pengeringan 300–450 °C → disosiasi air kristal 450–700 °C → kalsinasi 700–1.000 °C.',nid:{RK4:'Data RK4 sendiri: preheating ~300, drying ~750, calcining ~1.000 °C.'}},
+    esf:{ids:['ESF4','ESF2','ESF3'],rows:['Daya','Calcine','Hearth','Elektroda','Top bins','Feed pipes','S/M bijih · slag','Tap logam','Ladle logam','Suhu logam','Slag','Suhu slag','Trafo furnace','Pendingin'],
+      v:{ESF4:['38 MW','75 t/j','150 m²','Ø1,5 m','9 × 30 t','24','2,13 · 1,85','4–7×/hari','25 t','1.485 °C','50 t/j','1.575 °C','?','shell sprayer air (hearth bawah)'],
+         ESF2:['32 MW','60 t/j','150 m²','Ø1,5 m','9 × 30 t','25','2,21 · 1,85','4×/hari','25 t','1.485 °C (maks 1.500)','50–54 t/j','1.575 °C (maks 1.600)','?','copper block sidewall, bottom udara'],
+         ESF3:['42 MW','80 t/j','225 m²','Ø1,75 m','10 × 55 t','25','2,21 · 1,9–2,11','7–8×/hari','25 t','1.485 °C','72–86 t/j','1.575 °C','?','cooler TL-13: campuran N₂ + udara tekan']}}};
+  // daftar ringkas untuk panel diagram alir (satu kotak spesifikasi; "?" dilewati)
+  function specKV(a){const S=a&&SP[a.cat];if(!S||!S.ids.includes(a.id))return null;const r=S.rows.map((k,i)=>[k,S.v[a.id][i]]).filter(x=>x[1]!=='?');
+    const miss=S.rows.filter((k,i)=>S.v[a.id][i]==='?');return {rows:r,miss,notes:[S.nid&&S.nid[a.id],S.n].filter(Boolean)};}
+  function specTable(a){const S=SP[a.cat];if(!S||!S.ids.includes(a.id))return null;const w=mk('div','ui6cmp');w.append(mk('span','ksec','Spesifikasi · dibanding unit sejenis'));
+    const sc=mk('div','ui6scr'),t=mk('table','ui6tab'),hr=mk('tr');hr.append(mk('th','',''));S.ids.forEach(id=>{const th=mk('th',id===a.id?'me':'',id);hr.append(th);});t.append(hr);
+    S.rows.forEach((r,i)=>{const tr=mk('tr');tr.append(mk('th','',r));S.ids.forEach(id=>{const v=S.v[id][i];const td=mk('td',(id===a.id?'me':'')+(v==='?'?' q':''),v==='?'?'?':v);if(v==='?')td.title='Belum ada data; perlu nameplate/OEM atau CMMS';tr.append(td);});t.append(tr);});
+    sc.append(t);w.append(sc);const miss=S.rows.filter((r,i)=>S.v[a.id][i]==='?');if(miss.length)w.append(mk('p','ui6miss','Belum ada data untuk '+a.id+': '+miss.join(', ')+'.'));
+    [S.nid&&S.nid[a.id],S.n].filter(Boolean).forEach(x=>w.append(mk('p','ui6nt',x)));
+    w.append(mk('p','mnote','Sumber: data di kartu tiap unit (gambar plant, PPT Orientation FeNi Plant, dokumen UBPNK, hasil ukur Google Earth). "?" = perlu nameplate, manual OEM atau data CMMS.'));return w;}
+  // ---- 4) pola kerusakan umum (pengetahuan teknik umum, bukan data plant) ----
+  const FM={
+    rk:[['Tyre & support roller','aus, retak, ovality shell; kiln tidak lurus (kiln crank)','ukur ovality/kelurusan, suhu bearing roller, pola aus permukaan'],['Girth gear & pinion','aus gigi, backlash berubah, pelumasan kurang','analisis getaran, termografi gigi, cek pelumas'],['Refraktori','lepas/menipis → hot spot shell','shell scanner (suhu shell), inspeksi saat stop'],['Seal inlet/outlet','aus → udara palsu masuk, debu keluar','tekanan hood, O₂ di inlet, inspeksi visual'],['Main drive','motor/gearbox panas, bearing rusak','getaran, arus motor, suhu oli'],['Burner & BMS','nyala tidak stabil, flame failure trip','flame scanner, tekanan/aliran PC dan udara primer']],
+    rd:[['Tyre & trunnion','aus, misalignment, retak','suhu bearing trunnion, pola aus'],['Lifter & shell','lifter patah, material menempel','inspeksi saat stop, beban motor'],['Hot gas chamber & burner','refraktori rusak, nyala tidak stabil','suhu gas, flame scanner'],['Seal ujung','bocor → udara palsu','tekanan, inspeksi visual'],['Trommel & impeller breaker','screen tersumbat, hammer aus','ukuran produk, getaran, beban motor'],['Drive','girth gear/chain aus, motor panas','getaran, arus motor']],
+    esf:[['Elektroda Söderberg','patah, slip berlebih, baking tidak sempurna','arus/tegangan elektroda, panjang elektroda, suhu casing'],['Contact clamp & holder','panas berlebih, kebocoran air pendingin','suhu air keluar, termografi'],['Air pendingin','kebocoran ke dalam furnace (bahaya)','aliran & suhu keluar tiap sirkuit, alarm'],['Tap hole','sulit dibuka/ditutup, aus','catatan tapping, kondisi mud gun/drill'],['Trafo furnace & tap changer','panas, gas terlarut, kontak OLTC aus','DGA minyak, suhu belitan, hitungan operasi tap changer'],['Regulasi hidrolik','respon elektroda lambat, bocor','tekanan hidrolik, respon regulasi'],['Hearth & lining','aus → suhu shell naik','termokopel lining, suhu shell']],
+    crane:[['Wire rope & hook','putus kawat, aus','inspeksi berkala, hitungan siklus'],['Rem','kampas aus, slip','uji rem, celah kampas'],['Motor & inverter hoist/travel','panas, trip','arus, suhu, log alarm'],['Encoder & limit switch','posisi salah, sinyal hilang','log posisi, uji limit'],['Suplai daya (festoon/busbar)','kontak aus, kabel tertekuk','termografi, inspeksi visual']],
+    ccar:[['Roda & bearing','aus, panas','suhu bearing, suara'],['Drive & rem','motor panas, rem slip','arus motor, uji rem'],['Sensor posisi','berhenti tidak tepat','log posisi, kalibrasi'],['Rel','tidak lurus, sambungan longgar','inspeksi rel']],
+    conv:[['Belt & sambungan','sobek, splice lepas','inspeksi visual, belt rip detection'],['Idler & pulley','bearing macet, lagging aus','suara, termografi, getaran'],['Alignment','belt menyimpang','belt sway switch, inspeksi'],['Chute','tersumbat, aus','chute blockage switch, inspeksi']]};
+  function failBox(a){const L=FM[a.cat]||(a.shape==='conv'?FM.conv:null);if(!L)return null;const d=mk('details','ui6fm');d.append(mk('summary','','Pola kerusakan umum (referensi industri)'));
+    d.append(mk('p','ui6fmn','Pengetahuan teknik umum untuk mesin sejenis, bukan data plant ini. Bandingkan dengan Pareto CM di tab Ringkasan untuk melihat mana yang memang terjadi di sini.'));
+    const t=mk('table','ui6tab ui6fmt'),hr=mk('tr');['Komponen','Mode kerusakan','Deteksi dini'].forEach(h=>hr.append(mk('th','',h)));t.append(hr);L.forEach(r=>{const tr=mk('tr');r.forEach((c,i)=>tr.append(mk(i?'td':'th','',c)));t.append(tr);});
+    const sc=mk('div','ui6scr');sc.append(t);d.append(sc);return d;}
+  function tentang(a,s){const old=$('ui6Tent');if(old)old.remove();const sp=$('cSpec');if(sp){sp.classList.remove('ui6dup');const pv0=sp.previousElementSibling;if(pv0&&pv0.classList){pv0.classList.remove('ui6dup');if(pv0.textContent==='Spesifikasi lengkap (dari sumber)')pv0.textContent='Spesifikasi';}}if(!a||s)return;if(!sp)return;const w=mk('div','');w.id='ui6Tent';const t=specTable(a),f=failBox(a);if(!t&&!f)return;if(t)w.append(t);if(f)w.append(f);
+    let anchor=sp;const pv=sp.previousElementSibling;if(pv&&pv.classList&&pv.classList.contains('ksec')){anchor=pv;if(t)pv.classList.add('ui6dup');}if(t)sp.classList.add('ui6dup');anchor.before(w);}
+  // ---- 6–8) data CMMS baru ----
+  let D=null;
+  const pct=v=>v==null||v===''?'—':String(v).replace('.',',')+'%';
+  function planBox(a,s){const old=$('ui6Plan');if(old)old.remove();if(!a||s)return;const anchor=$('cPerf');if(!anchor)return;const w=mk('div','ui6plan');w.id='ui6Plan';w.append(mk('span','ksec','Perencanaan maintenance'));
+    let p=null;try{const S=window.SYS||{};const sysN=Object.keys(S).find(n=>S[n].main===a.id);const rec=D&&D.systems&&D.systems.find(x=>x.system===sysN||x.id===a.id);p=rec&&rec.plan;}catch(e){}
+    const dl=mk('dl','ui6dl');const row=(k,v)=>{dl.append(mk('dt','',k),mk('dd',v==null?'q':'',v==null?'— menunggu data CMMS':v));};
+    row('PM berikutnya',p&&p.nextPM?(p.nextPM.date||p.nextPM)+(p.nextPM.title?' · '+p.nextPM.title:''):null);
+    row('PIC / work center',p&&p.pic?p.pic:null);
+    if(p&&p.parts&&p.parts.length){dl.append(mk('dt','','Part kritis'));const dd=mk('dd','');p.parts.forEach(x=>{const low=x.stock!=null&&x.min!=null&&x.stock<x.min;const e=mk('div','ui6part'+(low?' low':''));e.append(mk('span','',x.name),mk('b','',(x.stock==null?'?':x.stock)+(x.unit?' '+x.unit:'')+(x.min!=null?' / min '+x.min:'')));if(low)e.title='Stok di bawah minimum';dd.append(e);});dl.append(dd);}
+    else row('Part kritis',null);w.append(dl);if(p&&D&&D.sample)w.append(mk('p','mnote','Data contoh.'));anchor.after(w);}
+  function lineBox(){const cb=window.COND&&COND.box;if(!cb)return;let w=$('ui6Lines');const tab=cb.querySelector('.ltab');if(!tab)return;const host=tab.closest('.ltwrap')||tab;
+    if(!w){w=mk('div','ui6lines');w.id='ui6Lines';}if(host.nextSibling!==w)host.after(w);w.innerHTML='';
+    w.append(mk('span','ksec','Kepatuhan PM & backlog WO'));const L=D&&D.lines;const names=['Line 2','Line 3','Line 4'];
+    const t=mk('table','ltab ui6lt'),hr=mk('tr');['Line','PM %','WO <7 h','7–30 h','>30 h','Telat'].forEach(h=>hr.append(mk('th','',h)));t.append(hr);
+    const get=n=>(Array.isArray(L)?L.find(x=>x&&x.line===n):L&&L[n])||{};const has=names.some(n=>get(n).pmCompliance!=null||get(n).backlog);
+    names.forEach(n=>{const r=get(n);const b=r.backlog||{};const tr=mk('tr');[n,pct(r.pmCompliance),b.lt7,b.d7_30,b.gt30,r.late].forEach((v,i)=>{const td=mk('td',(i===5&&v>0)||(i===4&&v>0)?'bad':'',v==null||v===''?'—':String(v));tr.append(td);});t.append(tr);});
+    w.append(t);if(!has)w.append(mk('p','ui6wait','Menunggu data CMMS (pmCompliance, backlog, late di tiap "lines").'));else if(D.sample)w.append(mk('p','mnote','Data contoh.'));
+    const P=D&&D.priority;w.append(mk('span','ksec','Prioritas sekarang'));
+    if(P&&P.length){const ol=mk('ol','ui6pri');P.slice(0,5).forEach(x=>{const li=mk('li','');const b=mk('button','',(x.label||x.system));b.type='button';b.onclick=()=>{try{const S=window.SYS||{};const id=(S[x.system]&&S[x.system].main)||x.id;const aa=byId(id);if(aa)select(aa,true);}catch(e){}};li.append(b,mk('span','',x.reason||''));ol.append(li);});w.append(ol);if(D.sample)w.append(mk('p','mnote','Data contoh; urutan dikirim CMMS.'));}
+    else w.append(mk('p','ui6wait','Menunggu data CMMS (field "priority").'));}
+  // ---- 3) rantai kapasitas desain di diagram alir ----
+  function pfCap(){const pl=$('pfLine');if(!pl||$('ui6Cap'))return;const d=mk('div','ui6cap');d.id='ui6Cap';
+    d.innerHTML='<b>Kapasitas desain per tahap (dokumen)</b><span><i class="l4"></i>Line 4: RD4 260 t/j bijih basah <em>(bersama Line 2)</em> → RK4 90 t/j umpan → ESF4 75 t/j calcine · 38 MW</span><span><i class="l2"></i>Line 2: RD4 → RK2 60 t/j umpan → ESF2 60 t/j calcine · 32 MW</span><span><i class="l3"></i>Line 3: RD3 130 t/j bijih basah → RK3 130 t/j umpan → ESF3 80 t/j calcine · 42 MW</span><small>Material berubah antar-tahap (air dan LOI hilang), jadi angka t/j tidak dibandingkan langsung. RD4 260 t/j memasok RK4 + RK2 (90 + 60 = 150 t/j umpan). Sumber: UBPNK hlm. 28 & 30, PPT Orientation hlm. 27.</small>';
+    pl.after(d);}
+  // ---- 5) istilah baku ----
+  const TERMS=[['Feed end / ujung umpan','Ujung masuk material pada kiln atau dryer.'],['Discharge end / ujung keluaran','Ujung keluar material; pada kiln, sisi burner.'],['Shell','Silinder baja kiln/dryer yang berputar.'],['Refraktori','Lapisan bata tahan api di dalam shell atau furnace.'],['Tyre (riding ring)','Cincin baja di sekeliling shell yang bertumpu pada support roller.'],['Girth gear & pinion','Roda gigi besar di shell dan gigi kecil penggeraknya.'],['Hood & seal','Penutup di ujung kiln/dryer dan perapatnya terhadap shell yang berputar.'],['Surge hopper','Penampung calcine panas sebelum diisi ke container car.'],['Ladle','Wadah tahan api untuk logam atau slag cair.'],['Tapping','Membuka lubang tap untuk mengeluarkan logam atau slag dari furnace.'],['Calcine','Bijih yang sudah dikalsinasi di kiln, umpan furnace.'],['LOI','Loss on ignition: sisa berat yang hilang bila dipanaskan; ukuran kalsinasi.']];
+  function gloss(){const dl=document.querySelector('#helpM .gloss dl');if(!dl||dl.dataset.ui6)return;dl.dataset.ui6='1';const have=new Set([...dl.querySelectorAll('dt')].map(d=>d.textContent));TERMS.forEach(([t,x])=>{if(!have.has(t))dl.append(mk('dt','',t),mk('dd','',x));});const sm=document.querySelector('#helpM .gloss summary');if(sm)sm.textContent='Glosarium istilah ('+dl.querySelectorAll('dt').length+')';}
+  // ---- jalankan ----
+  function refreshCard(){try{if(sel&&!$('card').hidden){planBox(sel,selSub);tentang(sel,selSub);}}catch(e){console.warn('UI6',e);}}
+  function set(d){D=d||null;try{lineBox();}catch(e){}refreshCard();}
+  setTimeout(()=>{try{if(!D&&window.FEED&&FEED.last)D=FEED.last;}catch(e){}
+    if(!D){const u=(window.FENI_CONFIG||{}).dataUrl||'data/kondisi.json';fetch(u,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(d&&!D)set(d);}).catch(()=>{});}
+    try{lineBox();pfCap();gloss();}catch(e){console.warn('UI6',e);}
+    const cb=window.COND&&COND.box;if(cb){let pend=false;new MutationObserver(()=>{if(pend)return;pend=true;requestAnimationFrame(()=>{pend=false;if(!$('ui6Lines')||!cb.contains($('ui6Lines'))||$('ui6Lines').previousElementSibling!==(cb.querySelector('.ltab')&&(cb.querySelector('.ltab').closest('.ltwrap')||cb.querySelector('.ltab'))))try{lineBox();}catch(e){}});}).observe(cb,{childList:true,subtree:true});}
+    const card=$('card');if(card){let p2=false;const mo=new MutationObserver(()=>{if(p2)return;p2=true;requestAnimationFrame(()=>{p2=false;mo.disconnect();try{if(sel&&!card.hidden){if(!$('ui6Plan'))planBox(sel,selSub);if(!$('ui6Tent'))tentang(sel,selSub);}}catch(e){}mo.observe(card,{childList:true,subtree:true});});});mo.observe(card,{childList:true,subtree:true});}
+    setInterval(()=>{try{pfCap();gloss();}catch(e){}},2000);
+    setInterval(()=>{const ab=$('cInfo'),pf=$('cPerf'),t=$('ui6Tent'),pl=$('ui6Plan');if(t&&ab&&t.hidden!==ab.hidden)t.hidden=ab.hidden;if(pl&&pf&&pl.hidden!==pf.hidden)pl.hidden=pf.hidden;},200);
+  },4000);
+  return {set,refreshCard,specKV,get data(){return D;}};})();
+window.UI6=UI6;
 </script>
 
 </body></html>
