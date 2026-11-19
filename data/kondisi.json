@@ -1,374 +1,853 @@
 {
-  "source": "CMMS",
-  "sample": true,
-  "updated": "2026-11-17T08:00:00+08:00",
-  "systems": [
+ "source": "CMMS",
+ "sample": true,
+ "updated": "2026-11-17T08:00:00+08:00",
+ "systems": [
+  {
+   "system": "Rotary Kiln 4",
+   "state": "MAINTENANCE ON",
+   "note": "Contoh: tetap jalan, ada WO PM yang sedang dikerjakan.",
+   "subs": [
     {
-      "system": "Rotary Kiln 4",
-      "state": "MAINTENANCE ON",
-      "note": "Contoh: tetap jalan, ada WO PM yang sedang dikerjakan.",
-      "subs": [
-        {
-          "name": "Exhaust Gas Treatment Equip.",
-          "state": "MAINTENANCE ON"
-        }
-      ],
-      "wo": [
-        {
-          "no": "WO-CONTOH-101",
-          "type": "PM",
-          "title": "Contoh: PM bulanan exhaust gas treatment",
-          "st": "Dikerjakan",
-          "sub": "Exhaust Gas Treatment Equip.",
-          "wc": "202 MEC 4",
-          "disc": "Mechanical"
-        }
-      ],
-      "metrics": [
-        {
-          "period": "7d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 5.4,
-          "mtbf": 71,
-          "ma": 91.2,
-          "pa": 92.8,
-          "ua": 96.4,
-          "eu": 89.5
-        },
-        {
-          "period": "30d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 4.9,
-          "mtbf": 104,
-          "ma": 94.1,
-          "pa": 95.0,
-          "ua": 96.9,
-          "eu": 92.1
-        }
-      ]
-    },
-    {
-      "system": "Rotary Dryer 4",
-      "state": "RUNNING",
-      "cmOpen": 1,
-      "wo": [
-        {
-          "no": "WO-CONTOH-102",
-          "type": "CM",
-          "title": "Contoh: abnormalitas switchgear, aset tetap jalan",
-          "st": "Dibuat",
-          "sub": "Rotary Dryer Switchgear",
-          "prio": "P3",
-          "disc": "Electrical",
-          "wc": "PIKET EMIP"
-        }
-      ],
-      "metrics": [
-        {
-          "period": "7d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 3.1,
-          "mtbf": 96,
-          "ma": 95.6,
-          "pa": 96.3,
-          "ua": 94.8,
-          "eu": 91.3
-        },
-        {
-          "period": "30d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 3.4,
-          "mtbf": 121,
-          "ma": 96.0,
-          "pa": 96.9,
-          "ua": 95.2,
-          "eu": 92.2
-        }
-      ]
-    },
-    {
-      "system": "Electric Smelting Furnace 3",
-      "state": "RUNNING",
-      "wo": [
-        {
-          "no": "WO-CONTOH-103",
-          "type": "PM",
-          "title": "Contoh: PM mingguan furnace switchgear",
-          "st": "Dijadwalkan",
-          "sub": "Furnace Switchgear",
-          "due": "2026-11-18",
-          "disc": "Electrical",
-          "wc": "242 ELM 3"
-        }
-      ],
-      "metrics": [
-        {
-          "period": "7d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 7.8,
-          "mtbf": 58,
-          "ma": 89.4,
-          "pa": 90.6,
-          "ua": 97.9,
-          "eu": 88.7
-        },
-        {
-          "period": "30d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 6.9,
-          "mtbf": 88,
-          "ma": 92.3,
-          "pa": 93.5,
-          "ua": 98.1,
-          "eu": 91.7
-        }
-      ]
-    },
-    {
-      "system": "Transfer Calcine 4",
-      "state": "RUNNING",
-      "cmOpen": 1,
-      "wo": [
-        {
-          "no": "WO-CONTOH-104",
-          "type": "CM",
-          "title": "Contoh: perbaikan encoder HCC",
-          "st": "Dibuat",
-          "sub": "HCC",
-          "disc": "Instrument",
-          "wc": "PIKET EMIP"
-        }
-      ],
-      "metrics": [
-        {
-          "period": "7d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 2.2,
-          "mtbf": "> 168",
-          "ma": 98.4,
-          "pa": 98.9,
-          "ua": 93.0,
-          "eu": 92.0
-        },
-        {
-          "period": "30d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 2.7,
-          "mtbf": 190,
-          "ma": 97.3,
-          "pa": 98.0,
-          "ua": 93.6,
-          "eu": 91.7
-        }
-      ]
-    },
-    {
-      "system": "Rotary Kiln 2",
-      "state": "RUNNING",
-      "metrics": [
-        {
-          "period": "7d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 6.8,
-          "mtbf": 52,
-          "ma": 87.1,
-          "pa": 88.4,
-          "ua": 95.2,
-          "eu": 84.2
-        },
-        {
-          "period": "30d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 6.1,
-          "mtbf": 79,
-          "ma": 89.0,
-          "pa": 90.2,
-          "ua": 95.8,
-          "eu": 86.4
-        }
-      ]
-    },
-    {
-      "system": "Rotary Kiln 3",
-      "state": "RUNNING",
-      "metrics": [
-        {
-          "period": "7d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 8.9,
-          "mtbf": 38,
-          "ma": 82.5,
-          "pa": 83.9,
-          "ua": 96.6,
-          "eu": 81.0
-        },
-        {
-          "period": "30d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 7.4,
-          "mtbf": 66,
-          "ma": 87.8,
-          "pa": 89.1,
-          "ua": 96.9,
-          "eu": 86.3
-        }
-      ]
-    },
-    {
-      "system": "Electric Smelting Furnace 2",
-      "state": "RUNNING",
-      "metrics": [
-        {
-          "period": "7d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 3.3,
-          "mtbf": 110,
-          "ma": 94.2,
-          "pa": 95.1,
-          "ua": 84.0,
-          "eu": 79.9
-        },
-        {
-          "period": "30d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 3.6,
-          "mtbf": 131,
-          "ma": 95.0,
-          "pa": 96.0,
-          "ua": 88.7,
-          "eu": 85.2
-        }
-      ]
-    },
-    {
-      "system": "Electric Smelting Furnace 4",
-      "state": "RUNNING",
-      "metrics": [
-        {
-          "period": "7d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 4.8,
-          "mtbf": 84,
-          "ma": 92.1,
-          "pa": 93.3,
-          "ua": 97.4,
-          "eu": 90.9
-        },
-        {
-          "period": "30d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 4.4,
-          "mtbf": 112,
-          "ma": 93.5,
-          "pa": 94.4,
-          "ua": 97.6,
-          "eu": 92.1
-        }
-      ]
-    },
-    {
-      "system": "Rotary Dryer 3",
-      "state": "RUNNING",
-      "metrics": [
-        {
-          "period": "7d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 5.0,
-          "mtbf": 70,
-          "ma": 90.0,
-          "pa": 91.2,
-          "ua": 93.5,
-          "eu": 85.3
-        },
-        {
-          "period": "30d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 4.6,
-          "mtbf": 95,
-          "ma": 91.4,
-          "pa": 92.5,
-          "ua": 94.1,
-          "eu": 87.0
-        }
-      ]
+     "name": "Exhaust Gas Treatment Equip.",
+     "state": "MAINTENANCE ON"
     }
-  ],
-  "lines": [
+   ],
+   "wo": [
     {
-      "line": "Line 2",
-      "metrics": [
-        {
-          "period": "7d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 4.1,
-          "mtbf": 83,
-          "ma": 93.0,
-          "pa": 94.2,
-          "ua": 90.5,
-          "eu": 85.2
-        },
-        {
-          "period": "30d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 4.4,
-          "mtbf": 97,
-          "ma": 93.8,
-          "pa": 94.9,
-          "ua": 91.1,
-          "eu": 86.5
-        }
-      ]
-    },
-    {
-      "line": "Line 3",
-      "metrics": [
-        {
-          "period": "7d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 6.3,
-          "mtbf": 64,
-          "ma": 90.2,
-          "pa": 91.5,
-          "ua": 96.8,
-          "eu": 88.6
-        },
-        {
-          "period": "30d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 5.8,
-          "mtbf": 92,
-          "ma": 92.6,
-          "pa": 93.7,
-          "ua": 97.0,
-          "eu": 90.9
-        }
-      ]
-    },
-    {
-      "line": "Line 4",
-      "metrics": [
-        {
-          "period": "7d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 4.6,
-          "mtbf": 75,
-          "ma": 92.4,
-          "pa": 93.6,
-          "ua": 95.9,
-          "eu": 89.8
-        },
-        {
-          "period": "30d",
-          "asOf": "2026-11-17T06:00:00+08:00",
-          "mttr": 4.5,
-          "mtbf": 108,
-          "ma": 94.6,
-          "pa": 95.5,
-          "ua": 96.3,
-          "eu": 92.0
-        }
-      ]
+     "no": "WO-CONTOH-101",
+     "type": "PM",
+     "title": "Contoh: PM bulanan exhaust gas treatment",
+     "st": "Dikerjakan",
+     "sub": "Exhaust Gas Treatment Equip.",
+     "wc": "202 MEC 4",
+     "disc": "Mechanical"
     }
-  ],
-  "note": "Semua angka pada file ini adalah contoh, bukan kondisi atau kinerja plant yang sebenarnya."
+   ],
+   "metrics": [
+    {
+     "period": "today",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 5.4,
+     "mtbf": 71,
+     "ma": 92.4,
+     "pa": 94.0,
+     "ua": 97.6,
+     "eu": 90.7,
+     "bdn": 0,
+     "bdh": 0.0,
+     "resp": 21,
+     "respIn": 81
+    },
+    {
+     "period": "7d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 5.4,
+     "mtbf": 71,
+     "ma": 91.2,
+     "pa": 92.8,
+     "ua": 96.4,
+     "eu": 89.5,
+     "bdn": 1,
+     "bdh": 2.7,
+     "resp": 19,
+     "respIn": 76,
+     "recov": 5.6,
+     "recovIn": 53
+    },
+    {
+     "period": "30d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 4.9,
+     "mtbf": 104,
+     "ma": 94.1,
+     "pa": 95.0,
+     "ua": 96.9,
+     "eu": 92.1,
+     "bdn": 3,
+     "bdh": 8.2,
+     "resp": 28,
+     "respIn": 56,
+     "recov": 6.0,
+     "recovIn": 53
+    },
+    {
+     "period": "mtd",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 4.9,
+     "mtbf": 104,
+     "ma": 92.7,
+     "pa": 93.9,
+     "ua": 96.7,
+     "eu": 90.8,
+     "bdn": 2,
+     "bdh": 5.5,
+     "resp": 20,
+     "respIn": 72,
+     "recov": 8.8,
+     "recovIn": 56
+    }
+   ],
+   "rca": [
+    {
+     "no": "RCA-CONTOH-102",
+     "trigger": "LTB",
+     "status": "DIAJUKAN",
+     "due": "2026-11-28",
+     "wc": "202 MEC 4"
+    }
+   ],
+   "geofence": {
+    "r": 50
+   }
+  },
+  {
+   "system": "Rotary Dryer 4",
+   "state": "RUNNING",
+   "cmOpen": 1,
+   "wo": [
+    {
+     "no": "WO-CONTOH-102",
+     "type": "CM",
+     "title": "Contoh: abnormalitas switchgear, aset tetap jalan",
+     "st": "Dibuat",
+     "sub": "Rotary Dryer Switchgear",
+     "prio": "P3",
+     "disc": "Electrical",
+     "wc": "PIKET EMIP"
+    }
+   ],
+   "metrics": [
+    {
+     "period": "today",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 3.1,
+     "mtbf": 96,
+     "ma": 96.8,
+     "pa": 97.5,
+     "ua": 96.0,
+     "eu": 92.5,
+     "bdn": 0,
+     "bdh": 0.0,
+     "resp": 31,
+     "respIn": 93
+    },
+    {
+     "period": "7d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 3.1,
+     "mtbf": 96,
+     "ma": 95.6,
+     "pa": 96.3,
+     "ua": 94.8,
+     "eu": 91.3,
+     "bdn": 1,
+     "bdh": 2.5,
+     "resp": 30,
+     "respIn": 71,
+     "recov": 9.8,
+     "recovIn": 52
+    },
+    {
+     "period": "30d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 3.4,
+     "mtbf": 121,
+     "ma": 96.0,
+     "pa": 96.9,
+     "ua": 95.2,
+     "eu": 92.2,
+     "bdn": 3,
+     "bdh": 7.5,
+     "resp": 35,
+     "respIn": 67,
+     "recov": 4.0,
+     "recovIn": 55
+    },
+    {
+     "period": "mtd",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 3.4,
+     "mtbf": 121,
+     "ma": 95.8,
+     "pa": 96.6,
+     "ua": 95.0,
+     "eu": 91.8,
+     "bdn": 2,
+     "bdh": 5.0,
+     "resp": 24,
+     "respIn": 88,
+     "recov": 4.3,
+     "recovIn": 76
+    }
+   ],
+   "geofence": {
+    "r": 50
+   }
+  },
+  {
+   "system": "Electric Smelting Furnace 3",
+   "state": "RUNNING",
+   "wo": [
+    {
+     "no": "WO-CONTOH-103",
+     "type": "PM",
+     "title": "Contoh: PM mingguan furnace switchgear",
+     "st": "Dijadwalkan",
+     "sub": "Furnace Switchgear",
+     "due": "2026-11-18",
+     "disc": "Electrical",
+     "wc": "242 ELM 3"
+    }
+   ],
+   "metrics": [
+    {
+     "period": "today",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 7.8,
+     "mtbf": 58,
+     "ma": 90.6,
+     "pa": 91.8,
+     "ua": 99.1,
+     "eu": 89.9,
+     "bdn": 0,
+     "bdh": 0.0,
+     "resp": 25,
+     "respIn": 77
+    },
+    {
+     "period": "7d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 7.8,
+     "mtbf": 58,
+     "ma": 89.4,
+     "pa": 90.6,
+     "ua": 97.9,
+     "eu": 88.7,
+     "bdn": 1,
+     "bdh": 3.6,
+     "resp": 19,
+     "respIn": 57,
+     "recov": 4.4,
+     "recovIn": 81
+    },
+    {
+     "period": "30d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 6.9,
+     "mtbf": 88,
+     "ma": 92.3,
+     "pa": 93.5,
+     "ua": 98.1,
+     "eu": 91.7,
+     "bdn": 3,
+     "bdh": 10.7,
+     "resp": 27,
+     "respIn": 68,
+     "recov": 7.1,
+     "recovIn": 70
+    },
+    {
+     "period": "mtd",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 6.9,
+     "mtbf": 88,
+     "ma": 90.8,
+     "pa": 92.0,
+     "ua": 98.0,
+     "eu": 90.2,
+     "bdn": 2,
+     "bdh": 7.1,
+     "resp": 24,
+     "respIn": 87,
+     "recov": 7.9,
+     "recovIn": 61
+    }
+   ],
+   "rca": [
+    {
+     "no": "RCA-CONTOH-101",
+     "trigger": "FB",
+     "status": "DIKERJAKAN",
+     "due": "2026-11-14",
+     "wc": "242 ELM 3"
+    }
+   ],
+   "geofence": {
+    "r": 50
+   }
+  },
+  {
+   "system": "Transfer Calcine 4",
+   "state": "RUNNING",
+   "cmOpen": 1,
+   "wo": [
+    {
+     "no": "WO-CONTOH-104",
+     "type": "CM",
+     "title": "Contoh: perbaikan encoder HCC",
+     "st": "Dibuat",
+     "sub": "HCC",
+     "disc": "Electrical",
+     "wc": "PIKET EMIP"
+    }
+   ],
+   "metrics": [
+    {
+     "period": "today",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 2.2,
+     "mtbf": "> 168",
+     "ma": 99.6,
+     "pa": 100,
+     "ua": 94.2,
+     "eu": 93.2,
+     "bdn": 0,
+     "bdh": 0.0,
+     "resp": 29,
+     "respIn": 90
+    },
+    {
+     "period": "7d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 2.2,
+     "mtbf": "> 168",
+     "ma": 98.4,
+     "pa": 98.9,
+     "ua": 93.0,
+     "eu": 92.0,
+     "bdn": 1,
+     "bdh": 3.4,
+     "resp": 33,
+     "respIn": 67,
+     "recov": 9.9,
+     "recovIn": 55
+    },
+    {
+     "period": "30d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 2.7,
+     "mtbf": 190,
+     "ma": 97.3,
+     "pa": 98.0,
+     "ua": 93.6,
+     "eu": 91.7,
+     "bdn": 3,
+     "bdh": 10.2,
+     "resp": 26,
+     "respIn": 85,
+     "recov": 4.1,
+     "recovIn": 72
+    },
+    {
+     "period": "mtd",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 2.7,
+     "mtbf": 190,
+     "ma": 97.8,
+     "pa": 98.5,
+     "ua": 93.3,
+     "eu": 91.8,
+     "bdn": 2,
+     "bdh": 6.8,
+     "resp": 19,
+     "respIn": 82,
+     "recov": 8.4,
+     "recovIn": 76
+    }
+   ],
+   "geofence": {
+    "r": 50
+   }
+  },
+  {
+   "system": "Rotary Kiln 2",
+   "state": "RUNNING",
+   "metrics": [
+    {
+     "period": "today",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 6.8,
+     "mtbf": 52,
+     "ma": 88.3,
+     "pa": 89.6,
+     "ua": 96.4,
+     "eu": 85.4,
+     "bdn": 0,
+     "bdh": 0.0,
+     "resp": 24,
+     "respIn": 83
+    },
+    {
+     "period": "7d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 6.8,
+     "mtbf": 52,
+     "ma": 87.1,
+     "pa": 88.4,
+     "ua": 95.2,
+     "eu": 84.2,
+     "bdn": 1,
+     "bdh": 4.2,
+     "resp": 30,
+     "respIn": 78,
+     "recov": 6.2,
+     "recovIn": 88
+    },
+    {
+     "period": "30d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 6.1,
+     "mtbf": 79,
+     "ma": 89.0,
+     "pa": 90.2,
+     "ua": 95.8,
+     "eu": 86.4,
+     "bdn": 3,
+     "bdh": 12.5,
+     "resp": 37,
+     "respIn": 74,
+     "recov": 7.6,
+     "recovIn": 53
+    },
+    {
+     "period": "mtd",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 6.1,
+     "mtbf": 79,
+     "ma": 88.0,
+     "pa": 89.3,
+     "ua": 95.5,
+     "eu": 85.3,
+     "bdn": 2,
+     "bdh": 8.3,
+     "resp": 32,
+     "respIn": 81,
+     "recov": 10.0,
+     "recovIn": 87
+    }
+   ]
+  },
+  {
+   "system": "Rotary Kiln 3",
+   "state": "RUNNING",
+   "metrics": [
+    {
+     "period": "today",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 8.9,
+     "mtbf": 38,
+     "ma": 83.7,
+     "pa": 85.1,
+     "ua": 97.8,
+     "eu": 82.2,
+     "bdn": 0,
+     "bdh": 0.0,
+     "resp": 26,
+     "respIn": 82
+    },
+    {
+     "period": "7d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 8.9,
+     "mtbf": 38,
+     "ma": 82.5,
+     "pa": 83.9,
+     "ua": 96.6,
+     "eu": 81.0,
+     "bdn": 1,
+     "bdh": 2.6,
+     "resp": 18,
+     "respIn": 73,
+     "recov": 4.2,
+     "recovIn": 55
+    },
+    {
+     "period": "30d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 7.4,
+     "mtbf": 66,
+     "ma": 87.8,
+     "pa": 89.1,
+     "ua": 96.9,
+     "eu": 86.3,
+     "bdn": 3,
+     "bdh": 7.9,
+     "resp": 19,
+     "respIn": 86,
+     "recov": 3.9,
+     "recovIn": 61
+    },
+    {
+     "period": "mtd",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 7.4,
+     "mtbf": 66,
+     "ma": 85.2,
+     "pa": 86.5,
+     "ua": 96.8,
+     "eu": 83.7,
+     "bdn": 2,
+     "bdh": 5.3,
+     "resp": 26,
+     "respIn": 90,
+     "recov": 3.6,
+     "recovIn": 70
+    }
+   ]
+  },
+  {
+   "system": "Electric Smelting Furnace 2",
+   "state": "RUNNING",
+   "metrics": [
+    {
+     "period": "today",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 3.3,
+     "mtbf": 110,
+     "ma": 95.4,
+     "pa": 96.3,
+     "ua": 85.2,
+     "eu": 81.1,
+     "bdn": 0,
+     "bdh": 0.0,
+     "resp": 36,
+     "respIn": 88
+    },
+    {
+     "period": "7d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 3.3,
+     "mtbf": 110,
+     "ma": 94.2,
+     "pa": 95.1,
+     "ua": 84.0,
+     "eu": 79.9,
+     "bdn": 1,
+     "bdh": 3.3,
+     "resp": 35,
+     "respIn": 66,
+     "recov": 5.9,
+     "recovIn": 66
+    },
+    {
+     "period": "30d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 3.6,
+     "mtbf": 131,
+     "ma": 95.0,
+     "pa": 96.0,
+     "ua": 88.7,
+     "eu": 85.2,
+     "bdn": 3,
+     "bdh": 10.0,
+     "resp": 36,
+     "respIn": 93,
+     "recov": 4.1,
+     "recovIn": 58
+    },
+    {
+     "period": "mtd",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 3.6,
+     "mtbf": 131,
+     "ma": 94.6,
+     "pa": 95.5,
+     "ua": 86.3,
+     "eu": 82.6,
+     "bdn": 2,
+     "bdh": 6.7,
+     "resp": 23,
+     "respIn": 64,
+     "recov": 6.4,
+     "recovIn": 77
+    }
+   ]
+  },
+  {
+   "system": "Electric Smelting Furnace 4",
+   "state": "RUNNING",
+   "metrics": [
+    {
+     "period": "today",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 4.8,
+     "mtbf": 84,
+     "ma": 93.3,
+     "pa": 94.5,
+     "ua": 98.6,
+     "eu": 92.1,
+     "bdn": 0,
+     "bdh": 0.0,
+     "resp": 18,
+     "respIn": 72
+    },
+    {
+     "period": "7d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 4.8,
+     "mtbf": 84,
+     "ma": 92.1,
+     "pa": 93.3,
+     "ua": 97.4,
+     "eu": 90.9,
+     "bdn": 1,
+     "bdh": 2.6,
+     "resp": 25,
+     "respIn": 78,
+     "recov": 9.7,
+     "recovIn": 81
+    },
+    {
+     "period": "30d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 4.4,
+     "mtbf": 112,
+     "ma": 93.5,
+     "pa": 94.4,
+     "ua": 97.6,
+     "eu": 92.1,
+     "bdn": 3,
+     "bdh": 7.8,
+     "resp": 28,
+     "respIn": 80,
+     "recov": 7.7,
+     "recovIn": 52
+    },
+    {
+     "period": "mtd",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 4.4,
+     "mtbf": 112,
+     "ma": 92.8,
+     "pa": 93.8,
+     "ua": 97.5,
+     "eu": 91.5,
+     "bdn": 2,
+     "bdh": 5.2,
+     "resp": 36,
+     "respIn": 86,
+     "recov": 9.1,
+     "recovIn": 86
+    }
+   ]
+  },
+  {
+   "system": "Rotary Dryer 3",
+   "state": "RUNNING",
+   "metrics": [
+    {
+     "period": "today",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 5.0,
+     "mtbf": 70,
+     "ma": 91.2,
+     "pa": 92.4,
+     "ua": 94.7,
+     "eu": 86.5,
+     "bdn": 0,
+     "bdh": 0.0,
+     "resp": 26,
+     "respIn": 59
+    },
+    {
+     "period": "7d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 5.0,
+     "mtbf": 70,
+     "ma": 90.0,
+     "pa": 91.2,
+     "ua": 93.5,
+     "eu": 85.3,
+     "bdn": 1,
+     "bdh": 2.9,
+     "resp": 31,
+     "respIn": 57,
+     "recov": 3.5,
+     "recovIn": 59
+    },
+    {
+     "period": "30d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 4.6,
+     "mtbf": 95,
+     "ma": 91.4,
+     "pa": 92.5,
+     "ua": 94.1,
+     "eu": 87.0,
+     "bdn": 3,
+     "bdh": 8.8,
+     "resp": 21,
+     "respIn": 69,
+     "recov": 3.4,
+     "recovIn": 50
+    },
+    {
+     "period": "mtd",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 4.6,
+     "mtbf": 95,
+     "ma": 90.7,
+     "pa": 91.8,
+     "ua": 93.8,
+     "eu": 86.2,
+     "bdn": 2,
+     "bdh": 5.8,
+     "resp": 21,
+     "respIn": 59,
+     "recov": 5.5,
+     "recovIn": 51
+    }
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "line": "Line 2",
+   "metrics": [
+    {
+     "period": "today",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 4.1,
+     "mtbf": 83,
+     "ma": 94.2,
+     "pa": 95.4,
+     "ua": 91.7,
+     "eu": 86.4
+    },
+    {
+     "period": "7d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 4.1,
+     "mtbf": 83,
+     "ma": 93.0,
+     "pa": 94.2,
+     "ua": 90.5,
+     "eu": 85.2
+    },
+    {
+     "period": "30d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 4.4,
+     "mtbf": 97,
+     "ma": 93.8,
+     "pa": 94.9,
+     "ua": 91.1,
+     "eu": 86.5
+    },
+    {
+     "period": "mtd",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 4.4,
+     "mtbf": 97,
+     "ma": 93.4,
+     "pa": 94.6,
+     "ua": 90.8,
+     "eu": 85.8
+    }
+   ]
+  },
+  {
+   "line": "Line 3",
+   "metrics": [
+    {
+     "period": "today",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 6.3,
+     "mtbf": 64,
+     "ma": 91.4,
+     "pa": 92.7,
+     "ua": 98.0,
+     "eu": 89.8
+    },
+    {
+     "period": "7d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 6.3,
+     "mtbf": 64,
+     "ma": 90.2,
+     "pa": 91.5,
+     "ua": 96.8,
+     "eu": 88.6
+    },
+    {
+     "period": "30d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 5.8,
+     "mtbf": 92,
+     "ma": 92.6,
+     "pa": 93.7,
+     "ua": 97.0,
+     "eu": 90.9
+    },
+    {
+     "period": "mtd",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 5.8,
+     "mtbf": 92,
+     "ma": 91.4,
+     "pa": 92.6,
+     "ua": 96.9,
+     "eu": 89.8
+    }
+   ]
+  },
+  {
+   "line": "Line 4",
+   "metrics": [
+    {
+     "period": "today",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 4.6,
+     "mtbf": 75,
+     "ma": 93.6,
+     "pa": 94.8,
+     "ua": 97.1,
+     "eu": 91.0
+    },
+    {
+     "period": "7d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 4.6,
+     "mtbf": 75,
+     "ma": 92.4,
+     "pa": 93.6,
+     "ua": 95.9,
+     "eu": 89.8
+    },
+    {
+     "period": "30d",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 4.5,
+     "mtbf": 108,
+     "ma": 94.6,
+     "pa": 95.5,
+     "ua": 96.3,
+     "eu": 92.0
+    },
+    {
+     "period": "mtd",
+     "asOf": "2026-11-17T06:00:00+08:00",
+     "mttr": 4.5,
+     "mtbf": 108,
+     "ma": 93.5,
+     "pa": 94.5,
+     "ua": 96.1,
+     "eu": 90.9
+    }
+   ]
+  }
+ ],
+ "note": "Semua angka pada file ini adalah contoh, bukan kondisi atau kinerja plant yang sebenarnya. Target, waktu/jumlah breakdown, respons/pemulihan, RCA dan geofence juga contoh.",
+ "targets": {
+  "ma": 92,
+  "pa": 93,
+  "ua": 90,
+  "eu": 85,
+  "mtbf": 100,
+  "mttr": 6,
+  "resp": 30,
+  "recov": 8,
+  "_catatan": "Contoh target. Target sebenarnya ditetapkan Manajemen/Engineer di CMMS (FR-KPI-06)."
+ }
 }
