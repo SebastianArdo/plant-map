@@ -982,6 +982,7 @@ body.ui4 .ui2seg button{grid-column:span 2}
 body.ui4 .ui2seg button[data-v="xr"],body.ui4 .ui2seg button[data-v="pfd"]{grid-column:span 3}
 body.walk.ui2.ui4 header>#ui2seg.ui2seg{display:grid!important}
 body.walk.ui2.ui4 header>#ui4chips.ui4chips{display:grid!important}
+@media (min-width:900px){body.ui4 header#panel{width:340px}}
 .ui4chips{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:6px}
 .ui4chips[hidden]{display:none!important}
 .ui4chips button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;height:46px;padding:0 2px;background:#0f1317;border:1px solid var(--line);border-radius:4px;color:var(--fg);cursor:pointer}
@@ -1035,6 +1036,10 @@ body.ui5 #card:not(.notes) .cnote{display:none!important}
 .pf.pfui .pfcap.mini>*:not(.pfcapx):not(.pfcn){display:none}
 .pf.pfui .pfcap.mini{padding-top:6px;padding-bottom:6px}
 .pfcapx{position:absolute;top:6px;right:6px;width:22px;height:22px;padding:0;border:1px solid var(--line);border-radius:3px;background:#1a2126;color:var(--muted);font:700 13px/1 var(--body);cursor:pointer}
+
+/* v3.74 sembunyikan UI sampai tertata */
+header#panel,#vrail,#card{transition:opacity .25s ease}
+body:not(.uiready) header#panel,body:not(.uiready) #vrail,body:not(.uiready) #card{opacity:0!important;pointer-events:none!important}
 </style>
 
 <div id="scene"></div>
@@ -1042,7 +1047,7 @@ body.ui5 #card:not(.notes) .cnote{display:none!important}
 
 <header id="panel">
   <div class="top">
-    <div style="display:flex;flex-direction:column;gap:6px"><span class="tag">UBPN Sultra · Pomalaa · Schematic v3.73</span><h1>FeNi Plant Pomalaa</h1></div>
+    <div style="display:flex;flex-direction:column;gap:6px"><span class="tag">UBPN Sultra · Pomalaa · Schematic v3.74</span><h1>FeNi Plant Pomalaa</h1></div>
     <div class="ctrl topb"><button id="helpB" type="button" aria-expanded="false" aria-controls="helpM" aria-label="Bantuan dan glosarium" title="Bantuan dan glosarium">?</button><button id="infoB" type="button" aria-expanded="false" aria-controls="infoM" aria-label="Tentang peta ini" title="Tentang peta ini">i</button><button id="moreB" type="button" aria-expanded="false" aria-controls="moreM" aria-label="Menu lainnya" title="Lainnya">⋯</button><button id="toggle" type="button">Menu</button></div>
   </div>
   <div class="infobox helpbox" id="helpM" hidden><b>Cara pakai</b>
@@ -5463,6 +5468,7 @@ window.SAT=(()=>{let mesh=null,on=false,ok=false;const attr=document.createEleme
 /* ---- v3.61: Riwayat maintenance per rentang tanggal (tahap 1: data). Membaca log aktivitas CMMS (FENI_CONFIG.historyUrl, bawaan data/riwayat.json).
    Saat CMMS sudah menyediakan perhitungan per rentang, angka di sini diganti angka CMMS; sekarang peta menghitung perkiraan sederhana dan memberi label. ---- */
 const RANGE=(()=>{
+  const $=id=>document.getElementById(id);
   const C=window.FENI_CONFIG||{},URL_=C.historyUrl||'data/riwayat.json';
   const mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;};
   const ALIAS={'Jetty Pomalaa':'Jetty (existing)','Gudang':'Gudang'};
@@ -5841,7 +5847,7 @@ window.SNAP=SNAP;
     const row=mk('div','ui4chips');row.id='ui4chips';row.setAttribute('role','group');row.setAttribute('aria-label','Lapisan dan kamera');
     ['vSat','vSpin','vLbl','vMM'].forEach(id=>{const b=$(id);if(b){b.classList.remove('vx');row.append(b);}});seg.after(row);
     const vm=$('vMore');if(vm)vm.classList.add('ui2hide');
-    const sync=()=>{row.hidden=seg.hidden;};setInterval(sync,400);sync();
+    const lb=$('vLbl');const sync=()=>{row.hidden=seg.hidden;if(lb){const m=(lb.title.match(/Label: (\w+)/)||[])[1]||'';const sp=lb.querySelector('span');const t=m?'Label: '+m:'Label';if(sp&&sp.textContent!==t)sp.textContent=t;const on=m&&m!=='mati';lb.dataset.s=on?'':'off';if(lb.getAttribute('aria-pressed')!==String(!!on))lb.setAttribute('aria-pressed',String(!!on));}};setInterval(sync,400);sync();
     // bantuan: kalimat rel kanan
     const hm=$('helpM');if(hm){[...hm.querySelectorAll('.hlist li')].forEach(li=>{if(/^Rel kanan/.test(li.textContent))li.innerHTML='<b>Rel kanan:</b> <b>Awal</b> kembali ke tampilan awal · <b>Layar</b> layar pantau, Mode TV per Line dan Presentasi · <b>Alat</b> pendataan, ukur jarak, simpan gambar · <b>Bantuan</b>.';
       if(/^Tab Peta/.test(li.textContent))li.innerHTML='<b>Tab Peta:</b> pilih <b>Peta 3D</b>, <b>Denah 2D</b> (tampak atas), <b>Jalan</b> (setinggi mata, W A S D), <b>Tampilan dalam</b> (isi peralatan terlihat dan beranimasi) atau <b>Diagram alir</b>. Di bawahnya: <b>Citra</b> satelit, <b>Putar</b> otomatis, <b>Label</b> dan <b>Minimap</b>. Cari peralatan dengan tombol <b>/</b>; warna, legenda dan daftar per area ada di <b>Tampilan peta</b> dan <b>Telusuri per area</b>.';});}
@@ -5861,12 +5867,15 @@ window.SNAP=SNAP;
       const ft=$('cFoot');if(ft){[...ft.children].forEach(c=>{if(!c.classList.contains('fchk')&&!c.classList.contains('ui5info'))c.classList.add('cnote');});
         let ib=ft.querySelector('.ui5info');if(!ib){ib=mk('button','ui5info','');ib.type='button';ib.onclick=()=>{const on=!card.classList.contains('notes');card.classList.toggle('notes',on);paint(ib);if(on){const p=ft.querySelector('.fprovt');if(p)p.hidden=false;try{ib.scrollIntoView({block:'nearest'});}catch(e){}}};ft.prepend(ib);}paint(ib);ft.hidden=false;}}
     function paint(ib){const on=card.classList.contains('notes');ib.textContent=on?'ⓘ Sembunyikan info & sumber':'ⓘ Info & sumber data';ib.setAttribute('aria-pressed',String(on));}
-    function links(){bw.innerHTML='';
-      const scs=[...card.querySelectorAll('.scb')];scs.slice(1).forEach(x=>{const w=x.parentNode;x.remove();if(w&&w.classList.contains('scw')&&!w.children.length)w.remove();});
-      const sc=scs[0];if(sc){const w=sc.parentNode;sc.textContent='Skema scope M/E';bw.append(sc);if(w&&w.classList.contains('scw')&&!w.children.length)w.remove();}
-      const ex=$('cExpl');if(ex){ex.textContent=ex.textContent.replace(/^▶\s*/,'');bw.append(ex);}
-      card.querySelectorAll('.pmb').forEach((x,i)=>{if(i){x.remove();return;}x.textContent='Posisi di diagram alir';bw.append(x);});
+    const EX=$('cExpl');
+    function links(){bw.querySelectorAll('.scb').forEach(x=>x.remove());
+      const scs=[...card.querySelectorAll('.scb')].reverse();scs.slice(1).forEach(x=>{const w=x.parentNode;x.remove();if(w&&w.classList.contains('scw')&&!w.children.length)w.remove();});
+      let sc=scs[0];if(!sc){try{if(sel&&!selSub&&SX.typeOf(sel)&&critKey(sel)!=='no'){const a=sel;sc=document.createElement('button');sc.type='button';sc.className='cexpl scb ui5sc';sc.onclick=()=>SX.open(a);}}catch(e){}}
+      if(sc){const w=sc.parentNode;sc.textContent='Skema scope M/E';bw.append(sc);if(w&&w.classList.contains('scw')&&!w.children.length)w.remove();}
+      const ex=EX;if(ex){ex.textContent=ex.textContent.replace(/^▶\s*/,'');bw.append(ex);}
+      [...card.querySelectorAll('.pmb')].reverse().forEach((x,i)=>{if(i){x.remove();return;}x.textContent='Posisi di diagram alir';bw.append(x);});
       card.querySelectorAll('.simb').forEach(x=>x.remove());
+      const how=$('cHow'),pr=$('cProc');if(how&&pr&&!pr.hidden&&pr.children.length)how.hidden=false;
       bar.hidden=!bw.children.length;const tabs=$('cTabs');if(tabs&&bar.nextSibling!==tabs)tabs.before(bar);
       }
     function partsHead(){const box=$('cComps');if(!box||box.querySelector('.ui5ph'))return;const first=[...box.children].find(c=>c.classList&&c.classList.contains('ksec'));
@@ -5904,6 +5913,9 @@ window.SNAP=SNAP;
   const cap=document.getElementById('pfCap');if(cap){const t=E('button','pfcapx','–');t.type='button';t.title='Kecilkan keterangan';t.onclick=e=>{e.stopPropagation();const m=cap.classList.toggle('mini');t.textContent=m?'+':'–';t.title=m?'Tampilkan keterangan':'Kecilkan keterangan';};
     new MutationObserver(()=>{if(!cap.contains(t))cap.prepend(t);}).observe(cap,{childList:true});cap.prepend(t);}
 })();
+
+/* v3.74: tandai UI siap setelah semua penataan (ui2–ui5) berjalan; cadangan 6 detik bila ada yang gagal */
+(()=>{const done=()=>document.body.classList.add('uiready');const t0=Date.now();const iv=setInterval(()=>{const b=document.body.classList;if((b.contains('ui4')&&b.contains('ui5'))||Date.now()-t0>6000){clearInterval(iv);setTimeout(done,60);}},100);})();
 </script>
 
 </body></html>
