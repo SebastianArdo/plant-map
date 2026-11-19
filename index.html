@@ -1095,6 +1095,9 @@ body.night .lbl{background:rgba(8,10,14,.86)}
 .pfkvn{font-size:11.5px!important;color:#b8c2c8}
 .pfkvm{font-size:11.5px!important;color:#e0c068}
 .pfcapx{display:none!important}
+
+/* v3.78 VR */
+body.vrprev #panel,body.vrprev #vrail,body.vrprev #card,body.vrprev #labels,body.vrprev #mm,body.vrprev #compass,body.vrprev #tip,body.vrprev #legend,body.vrprev #floorBar,body.vrprev #toast,body.vrprev .ui3pop{display:none!important}
 </style>
 
 <div id="scene"></div>
@@ -1102,7 +1105,7 @@ body.night .lbl{background:rgba(8,10,14,.86)}
 
 <header id="panel">
   <div class="top">
-    <div style="display:flex;flex-direction:column;gap:6px"><span class="tag">UBPN Sultra · Pomalaa · Schematic v3.77</span><h1>FeNi Plant Pomalaa</h1></div>
+    <div style="display:flex;flex-direction:column;gap:6px"><span class="tag">UBPN Sultra · Pomalaa · Schematic v3.78</span><h1>FeNi Plant Pomalaa</h1></div>
     <div class="ctrl topb"><button id="helpB" type="button" aria-expanded="false" aria-controls="helpM" aria-label="Bantuan dan glosarium" title="Bantuan dan glosarium">?</button><button id="infoB" type="button" aria-expanded="false" aria-controls="infoM" aria-label="Tentang peta ini" title="Tentang peta ini">i</button><button id="moreB" type="button" aria-expanded="false" aria-controls="moreM" aria-label="Menu lainnya" title="Lainnya">⋯</button><button id="toggle" type="button">Menu</button></div>
   </div>
   <div class="infobox helpbox" id="helpM" hidden><b>Cara pakai</b>
@@ -5169,8 +5172,9 @@ const COND=(()=>{
     // what stops with it (the former Dampak tab) lives here too
     if(CI)pane.append(CI);}
   let gRing=null,gId='';
-  // v3.65: titik acuan GPS bawaan dari screenshot Google Earth berkisi koordinat (19/11/2026, dicocokkan ke citra; ketelitian ±1 detik busur ≈ ±30 m). Bisa diganti lewat FENI_CONFIG.geoRef.
-  const GR=(window.FENI_CONFIG||{}).geoRef||[{lat:-4.186251,lon:121.61058,x:389.5,y:370.3},{lat:-4.184973,lon:121.614057,x:721.0,y:542.5}];
+  // v3.78: titik acuan GPS dari user (Google Maps, 20/11/2026): ujung RD4 sisi hot gas chamber dan ujung timur RK4; posisi di peta dari pencocokan fitur screenshot ke citra (599 & 1411 titik).
+  // Selisih dengan acuan lama (kisi Google Earth) ±1,5 m. Ketelitian mutlak mengikuti georeferensi citra Google. Bisa diganti lewat FENI_CONFIG.geoRef.
+  const GR=(window.FENI_CONFIG||{}).geoRef||[{lat:-4.185083,lon:121.613013,x:642.4,y:470.9},{lat:-4.185958,lon:121.611425,x:469.0,y:412.9}];
   const px2ll=(x,y)=>{if(!Array.isArray(GR)||GR.length<2)return null;const k=Math.cos(GR[0].lat*Math.PI/180),P=g=>[g.lon*k,-g.lat],a=P(GR[0]),b=P(GR[1]);
     const ux=b[0]-a[0],uy=b[1]-a[1],vx=GR[1].x-GR[0].x,vy=GR[1].y-GR[0].y,d=ux*ux+uy*uy;if(!d)return null;const re=(vx*ux+vy*uy)/d,im=(vy*ux-vx*uy)/d,n=re*re+im*im,wx=x-GR[0].x,wy=y-GR[0].y;
     const dx=(re*wx+im*wy)/n,dy=(-im*wx+re*wy)/n;return [-(a[1]+dy),(a[0]+dx)/k];};
@@ -6112,6 +6116,200 @@ const UI6=(()=>{const $=id=>document.getElementById(id),mk=(t,c,x)=>{const e=doc
   },4000);
   return {set,refreshCard,specKV,get data(){return D;}};})();
 window.UI6=UI6;
+
+/* ---- v3.78: Mode VR (WebXR). Tombol "VR" hanya muncul bila browser mendukung immersive-vr (mis. Meta Quest Browser).
+   Semua yang ada di sini hanya aktif saat sesi VR (atau pratinjau #vr-preview-meja / #vr-preview-jalan untuk uji di PC);
+   tampilan layar biasa tidak berubah.
+   Mode meja: plant jadi maket di atas meja (stik: putar & perbesar). Mode jalan: skala 1:1, teleport dengan trigger ke tanah, stik kiri/kanan = belok 30°.
+   Trigger ke peralatan = pilih (panel info di kanan). Menu di kiri: Meja · Jalan · Label · Keluar. ---- */
+window.VRX=(()=>{
+  const xr=navigator.xr,V3=THREE.Vector3,UP=new V3(0,1,0);
+  let inXR=false,prev=false,mode='meja',session=null,refType='local-floor',lblOn=true;
+  /* --- rAF: saat sesi VR, window.requestAnimationFrame bisa berhenti; semua loop peta dialirkan lewat renderer.setAnimationLoop --- */
+  const _raf=window.requestAnimationFrame.bind(window),_caf=window.cancelAnimationFrame.bind(window);
+  const pend=new Map(),xq=new Map();let gen=0,fid=0;
+  if(xr){
+    window.requestAnimationFrame=function(cb){if(inXR){const id=--fid;xq.set(id,cb);return id;}const g=gen;let id=0;id=_raf(t=>{pend.delete(id);if(g!==gen)return;cb(t);});pend.set(id,cb);return id;};
+    window.cancelAnimationFrame=function(id){if(xq.delete(id))return;pend.delete(id);_caf(id);};
+  }
+  function toXR(){inXR=true;gen++;pend.forEach((cb,id)=>{_caf(id);xq.set(--fid,cb);});pend.clear();}
+  function fromXR(){inXR=false;const q=[...new Set(xq.values())];xq.clear();q.forEach(cb=>window.requestAnimationFrame(cb));}
+  function flush(t){const q=[...new Set(xq.values())];xq.clear();if(!q.includes(loop))q.push(loop);q.forEach(cb=>{try{cb(t);}catch(e){console.warn('VR frame',e);}});}
+
+  /* --- grup: rig (kamera, controller, panel; skala = pengguna) dan world (label, meja, penanda teleport) --- */
+  const rig=new THREE.Group();rig.name='vrRig';const world=new THREE.Group();world.name='vrWorld';world.visible=false;
+  const SG=SATG,C0=new V3(SG.cx,0,SG.cz);
+  let S=60,theta=0;const T_D=.85;
+  const tableH=()=>refType==='local-floor'?.85:-.75,eyeH=()=>refType==='local-floor'?1.6:0;
+
+  // meja: papan gelap di bawah citra plant
+  const slab=new THREE.Mesh(new THREE.BoxGeometry(SG.w+1.2,1.2,SG.h+1.2),new THREE.MeshLambertMaterial({color:0x1b2126}));slab.position.set(SG.cx,-.64,SG.cz);slab.raycast=()=>{};world.add(slab);
+  const slabE=new THREE.LineSegments(new THREE.EdgesGeometry(slab.geometry),new THREE.LineBasicMaterial({color:0x5a6a74}));slabE.position.copy(slab.position);slabE.raycast=()=>{};world.add(slabE);
+  // penanda teleport
+  const tpM=new THREE.Mesh(new THREE.RingGeometry(.32/MU,.45/MU,40),new THREE.MeshBasicMaterial({color:0x5cd68a,transparent:true,opacity:.9,depthTest:false,side:THREE.DoubleSide}));
+  tpM.rotation.x=-Math.PI/2;tpM.renderOrder=20;tpM.visible=false;tpM.raycast=()=>{};world.add(tpM);
+
+  /* --- kanvas → tekstur --- */
+  const FONT='system-ui,-apple-system,"Segoe UI",Roboto,sans-serif';
+  function canvasPlane(wPx,hPx,wM){const cv=document.createElement('canvas');cv.width=wPx;cv.height=hPx;const tx=new THREE.CanvasTexture(cv);tx.anisotropy=4;
+    const m=new THREE.Mesh(new THREE.PlaneGeometry(wM,wM*hPx/wPx),new THREE.MeshBasicMaterial({map:tx,transparent:true,depthTest:false}));m.renderOrder=30;return {cv,cx:cv.getContext('2d'),tx,m};}
+  function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
+  function wrapT(c,t,maxW){const w=String(t||'').split(/\s+/),L=[];let s='';w.forEach(x=>{const n=s?s+' '+x:x;if(c.measureText(n).width>maxW&&s){L.push(s);s=x;}else s=n;});if(s)L.push(s);return L;}
+
+  /* --- menu (kiri) --- */
+  const BTN=[['meja','Meja'],['jalan','Jalan'],['label','Label'],['keluar','Keluar']];
+  const menu=canvasPlane(880,200,.44);menu.m.name='vrMenu';let mHover=-1;
+  function drawMenu(){const c=menu.cx,W=880,H=200;c.clearRect(0,0,W,H);rr(c,4,4,W-8,H-8,26);c.fillStyle='rgba(16,21,25,.92)';c.fill();c.lineWidth=3;c.strokeStyle='#3b4a54';c.stroke();
+    const bw=(W-40-30)/4;BTN.forEach(([k,n],i)=>{const x=20+i*(bw+10),y=46,act=(k===mode)||(k==='label'&&lblOn);rr(c,x,y,bw,130,18);
+      c.fillStyle=i===mHover?'#2c6e8f':act?'#3a2a12':'#222b31';c.fill();c.lineWidth=act?5:2;c.strokeStyle=act?'#e8a23c':'#4a5963';c.stroke();
+      c.fillStyle='#f2f4f5';c.font='600 46px '+FONT;c.textAlign='center';c.fillText(n,x+bw/2,y+80);});
+    c.textAlign='left';c.fillStyle='#9fb0ba';c.font='500 26px '+FONT;c.fillText('FeNi Pomalaa · mode VR',24,34);menu.tx.needsUpdate=true;}
+  /* --- panel info (kanan) --- */
+  const info=canvasPlane(1100,760,.6);info.m.name='vrInfo';let infoKey='',hoverName='';
+  function stateOf(a){if(a.idle)return {n:'TIDAK BEROPERASI',c:'#8f9aa1'};try{const k=COND.state(a.id),s=COND.ST[k];if(s)return {n:s.n,c:s.c};}catch(e){}return {n:'RUNNING',c:'#5cb874'};}
+  function sampleTag(){try{return COND.demo||COND.isSample()||COND.source()==='none';}catch(e){return true;}}
+  function drawInfo(force){const a=sel;let rows=null;try{rows=a?COND.mrow(a.id):null;}catch(e){}
+    const st=a?stateOf(a):null,key=[a?a.id:'',st?st.n:'',JSON.stringify(rows||''),hoverName,mode,sampleTag()].join('|');if(!force&&key===infoKey)return;infoKey=key;
+    const c=info.cx,W=1100,H=760;c.clearRect(0,0,W,H);rr(c,4,4,W-8,H-8,30);c.fillStyle='rgba(16,21,25,.93)';c.fill();c.lineWidth=4;c.strokeStyle=a?st.c:'#3b4a54';c.stroke();c.textAlign='left';
+    let y=70;if(!a){c.fillStyle='#f2f4f5';c.font='700 54px '+FONT;c.fillText('Arahkan & tekan trigger',40,y+10);y+=80;c.font='500 34px '+FONT;c.fillStyle='#c9d3d8';
+      const tips=mode==='meja'?['Trigger ke peralatan: lihat info','Stik kiri/kanan: putar maket','Stik maju/mundur: perbesar/perkecil','Menu kiri: ganti ke mode Jalan']
+        :['Trigger ke peralatan: lihat info','Trigger ke tanah: pindah (teleport)','Stik kiri/kanan: belok 30°','Menu kiri: kembali ke mode Meja'];
+      tips.forEach(t=>{c.fillText('• '+t,44,y);y+=56;});}
+    else{c.fillStyle='#9fb0ba';c.font='600 30px '+FONT;c.fillText(((CAT[a.cat]||{}).n||'').toUpperCase(),40,y-6);y+=52;
+      c.fillStyle='#f2f4f5';c.font='700 64px '+FONT;c.fillText(a.disp||a.id,40,y);y+=34;
+      c.font='700 30px '+FONT;const tw=c.measureText(st.n).width+40;rr(c,40,y,tw,52,12);c.fillStyle=st.c;c.globalAlpha=.22;c.fill();c.globalAlpha=1;c.lineWidth=3;c.strokeStyle=st.c;c.stroke();c.fillStyle='#f2f4f5';c.fillText(st.n,60,y+37);
+      if(sampleTag()){const t2='DATA CONTOH',x2=40+tw+16,w2=c.measureText(t2).width+40;rr(c,x2,y,w2,52,12);c.strokeStyle='#e8a23c';c.stroke();c.fillStyle='#e8c070';c.fillText(t2,x2+20,y+37);}
+      y+=100;let sm='';try{sm=(typeof SHORTS!=='undefined'&&SHORTS[a.id])||firstSent((INFO[a.id]||{}).fn||a.desc);}catch(e){}
+      c.fillStyle='#dfe5e8';c.font='500 36px '+FONT;wrapT(c,sm,W-80).slice(0,4).forEach(l=>{c.fillText(l,40,y);y+=48;});
+      if(rows&&rows.length){y+=18;const cw=(W-80)/3;rows.slice(0,6).forEach(([n,v],i)=>{const x=40+(i%3)*cw,yy=y+Math.floor(i/3)*96;c.fillStyle='#8fa1ab';c.font='600 26px '+FONT;c.fillText(String(n).toUpperCase(),x,yy);
+        c.fillStyle='#f2f4f5';c.font='700 42px '+FONT;c.fillText(String(v),x,yy+46);});}}
+    c.fillStyle='#7f9099';c.font='500 26px '+FONT;c.fillText(hoverName?'Ditunjuk: '+hoverName:(a?'Trigger ke tempat kosong: tutup info':''),40,H-34);info.tx.needsUpdate=true;}
+  rig.add(menu.m,info.m);
+
+  /* --- label 3D (sprite) untuk peralatan utama dan yang tidak RUNNING --- */
+  const LC=['rd','rk','esf','hall','ore'],labels=[];
+  function lblTex(a){const st=stateOf(a),run=st.n==='RUNNING',cv=document.createElement('canvas'),c=cv.getContext('2d'),nm=a.disp||a.id;c.font='700 44px '+FONT;
+    const w=Math.ceil(Math.max(c.measureText(nm).width,run?0:(c.font='700 30px '+FONT,c.measureText(st.n).width))+56),h=run?76:122;cv.width=w;cv.height=h;
+    rr(c,3,3,w-6,h-6,16);c.fillStyle='rgba(14,18,22,.88)';c.fill();c.lineWidth=5;c.strokeStyle=run?'#56646d':st.c;c.stroke();c.fillStyle='#f4f6f7';c.font='700 44px '+FONT;c.textAlign='center';c.fillText(nm,w/2,54);
+    if(!run){c.fillStyle=st.c;c.font='700 30px '+FONT;c.fillText(st.n,w/2,98);}const t=new THREE.CanvasTexture(cv);t.anisotropy=4;return {t,ar:w/h,k:nm+'|'+st.n};}
+  function buildLabels(){labels.forEach(l=>{world.remove(l.s);l.s.material.map.dispose();l.s.material.dispose();});labels.length=0;
+    A.forEach(a=>{if(!a.group||a.hidden)return;let k='run';try{k=COND.state(a.id);}catch(e){}if(!LC.includes(a.cat)&&(k==='run'||!k))return;
+      const b=new THREE.Box3().setFromObject(a.group);if(!isFinite(b.max.y))return;const L=lblTex(a),m=new THREE.SpriteMaterial({map:L.t,depthTest:false,transparent:true}),s=new THREE.Sprite(m);
+      s.center.set(.5,0);s.renderOrder=25;s.raycast=()=>{};s.position.set(a.group.position.x,b.max.y+.25,a.group.position.z);world.add(s);labels.push({a,s,ar:L.ar,k:L.k});});
+    labels.forEach(l=>l.s.visible=lblOn);}
+  function refreshLabels(){labels.forEach(l=>{const L=lblTex(l.a);if(L.k===l.k){L.t.dispose();return;}l.s.material.map.dispose();l.s.material.map=L.t;l.s.material.needsUpdate=true;l.ar=L.ar;l.k=L.k;});}
+  const HW=new V3();
+  function scaleLabels(){cam.getWorldPosition(HW);const sc=rig.scale.x;labels.forEach(l=>{if(!l.s.visible)return;const d=Math.max(.2*sc,HW.distanceTo(l.s.position)),h=d*.03;l.s.scale.set(h*l.ar,h,1);});}
+
+  /* --- controller --- */
+  const RC=new THREE.Raycaster(),TM=new THREE.Matrix4(),ctrls=[];
+  function mkCtrl(i){const c=renderer.xr.getController(i);const g=new THREE.BufferGeometry().setFromPoints([new V3(0,0,0),new V3(0,0,-1)]);
+    const ln=new THREE.Line(g,new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:.8,depthTest:false}));ln.renderOrder=40;ln.raycast=()=>{};ln.scale.z=2;c.add(ln);
+    const dot=new THREE.Mesh(new THREE.SphereGeometry(.008,12,8),new THREE.MeshBasicMaterial({color:0xffffff,depthTest:false}));dot.renderOrder=41;dot.raycast=()=>{};c.add(dot);
+    const o={c,ln,dot,src:null,hit:null,turnL:false};c.visible=false;
+    c.addEventListener('connected',e=>{o.src=e.data;c.visible=e.data&&e.data.targetRayMode!=='gaze';});c.addEventListener('disconnected',()=>{o.src=null;c.visible=false;o.hit=null;});
+    c.addEventListener('select',()=>act(o.hit));rig.add(c);ctrls.push(o);}
+  const RECT={x0:SG.cx-SG.w/2,x1:SG.cx+SG.w/2,z0:SG.cz-SG.h/2,z1:SG.cz+SG.h/2};
+  const inRect=p=>p.x>=RECT.x0&&p.x<=RECT.x1&&p.z>=RECT.z0&&p.z<=RECT.z1;
+  function hitTest(ray){RC.ray.copy(ray);RC.near=0;RC.far=Infinity;RC.camera=cam;
+    const u=RC.intersectObjects([menu.m,info.m],false)[0];if(u){if(u.object===menu.m){const i=Math.min(3,Math.max(0,Math.floor((u.uv.x*880-20)/((880-70)/4+10))));return {k:'menu',i,pt:u.point,d:u.distance};}return {k:'info',pt:u.point,d:u.distance};}
+    for(const h of RC.intersectObjects(objs,true)){const o=h.object,a=o.userData.a;if(!a||a.hidden||o.isLine||!isVis(o))continue;if(o.userData.xray&&(a.near||a.floorSel))continue;
+      if(mode==='meja'&&!inRect(h.point))continue;return {k:'eq',a,pt:h.point,d:h.distance};}
+    if(mode==='jalan'){const p=new V3();if(RC.ray.intersectPlane(new THREE.Plane(UP,0),p))return {k:'ground',pt:p,d:RC.ray.origin.distanceTo(p)};}
+    return null;}
+  function act(h){if(!h){if(sel&&mode==='meja'){try{closeCard();}catch(e){}drawInfo(true);}return;}
+    if(h.k==='menu'){const k=BTN[h.i][0];if(k==='keluar'){exit();return;}if(k==='label'){lblOn=!lblOn;labels.forEach(l=>l.s.visible=lblOn);drawMenu();return;}setMode(k);return;}
+    if(h.k==='eq'){try{select(h.a,false);}catch(e){console.warn(e);}drawInfo(true);return;}
+    if(h.k==='ground'&&mode==='jalan'){teleport(h.pt);return;}
+    if(h.k==='info')return;}
+  function teleport(p){cam.getWorldPosition(HW);rig.position.x+=p.x-HW.x;rig.position.z+=p.z-HW.z;}
+
+  /* --- mode --- */
+  function placeMeja(){rig.scale.setScalar(S);rig.rotation.set(0,theta,0);const L=new V3(0,tableH(),-T_D).multiplyScalar(S).applyAxisAngle(UP,theta);rig.position.copy(C0).sub(L);}
+  let fog0=null;
+  const clipP=[new THREE.Plane(new V3(1,0,0),-RECT.x0),new THREE.Plane(new V3(-1,0,0),RECT.x1),new THREE.Plane(new V3(0,0,1),-RECT.z0),new THREE.Plane(new V3(0,0,-1),RECT.z1)];
+  let clipped=[];
+  function setClip(v){clipped.forEach(m=>{m.clippingPlanes=null;m.needsUpdate=true;});clipped=[];renderer.localClippingEnabled=!!v;if(!v)return;
+    const seen=new Set();scene.traverse(o=>{if(o===rig||o===world)return;let p=o;while(p){if(p===rig||p===world)return;p=p.parent;}const ms=Array.isArray(o.material)?o.material:o.material?[o.material]:[];
+      ms.forEach(m=>{if(seen.has(m))return;seen.add(m);m.clippingPlanes=clipP;m.needsUpdate=true;clipped.push(m);});});}
+  function setMode(m){mode=m;
+    if(m==='meja'){placeMeja();slab.visible=slabE.visible=true;tpM.visible=false;scene.fog=null;setClip(true);}
+    else{setClip(false);slab.visible=slabE.visible=false;const s=1/MU;rig.scale.setScalar(s);
+      const t=sel?sel.group.position.clone():new V3(HOME.t.x,0,HOME.t.z),st=sel?t.clone().add(new V3(0,0,(sel.len||3)/2+1.4)):t.clone();st.y=0;
+      const dx=t.x-st.x,dz=t.z-st.z;const yaw=(dx||dz)?Math.atan2(-dx,-dz):0;rig.rotation.set(0,yaw,0);rig.position.set(st.x,refType==='local-floor'?0:1.6*s,st.z);
+      scene.fog=new THREE.Fog(scene.background.getHex(),420,1600);}
+    placePanels();drawMenu();drawInfo(true);if(prev&&!session)cam.rotation.set(m==='meja'?-.62:-.08,0,0);}
+  function placePanels(){const e=eyeH();menu.m.position.set(-.5,e-.55,-.58);info.m.position.set(.66,e-.22,-.74);
+    [menu.m,info.m].forEach(p=>{p.rotation.order='YXZ';p.rotation.set(p===menu.m?-.55:-.12,Math.atan2(-p.position.x,-p.position.z),0);});}
+
+  /* --- per frame --- */
+  let last=0,lblT=0;
+  function tick(t){const dt=Math.min(.1,last?(t-last)/1000:0);last=t;fly=null;
+    if(inXR&&session){for(const src of session.inputSources){const gp=src.gamepad;if(!gp||!gp.axes)continue;const ax=gp.axes,x=ax.length>=4?ax[2]:ax[0]||0,y=ax.length>=4?ax[3]:ax[1]||0;stick(src.handedness,x,y,dt);}}
+    let anyHover='';const ray=new THREE.Ray();
+    ctrls.forEach(o=>{if(!o.c.visible){o.hit=null;return;}o.c.updateMatrixWorld(true);TM.identity().extractRotation(o.c.matrixWorld);ray.origin.setFromMatrixPosition(o.c.matrixWorld);ray.direction.set(0,0,-1).applyMatrix4(TM);
+      const h=hitTest(ray);o.hit=h;const sc=rig.scale.x,len=h?h.d/sc:2;o.ln.scale.z=Math.max(.05,len);o.dot.position.set(0,0,-len);o.dot.visible=!!h;
+      o.ln.material.color.set(!h?0xffffff:h.k==='ground'?0x5cd68a:0x5cc8ff);if(h&&h.k==='eq')anyHover=h.a.disp||h.a.id;});
+    const g=ctrls.find(o=>o.hit&&o.hit.k==='ground');tpM.visible=!!g&&mode==='jalan';if(g)tpM.position.set(g.hit.pt.x,.05,g.hit.pt.z);
+    const mh=ctrls.find(o=>o.hit&&o.hit.k==='menu'),nh=mh?mh.hit.i:-1;if(nh!==mHover){mHover=nh;drawMenu();}
+    if(anyHover!==hoverName){hoverName=anyHover;}
+    lblT+=dt;if(lblT>1){lblT=0;refreshLabels();}drawInfo(false);scaleLabels();}
+  function stick(hand,x,y,dt){if(mode==='meja'){let ch=false;if(Math.abs(x)>.15){theta-=x*dt*1.1;ch=true;}if(Math.abs(y)>.15){S=Math.min(170,Math.max(18,S*Math.exp(y*dt*.9)));ch=true;}if(ch)placeMeja();return;}
+    const o=ctrls.find(c=>c.src&&c.src.handedness===hand)||ctrls[0];if(Math.abs(x)<.3)o.turnL=false;else if(Math.abs(x)>.7&&!o.turnL){o.turnL=true;snapTurn(x>0?-Math.PI/6:Math.PI/6);}}
+  function snapTurn(an){cam.getWorldPosition(HW);rig.rotation.y+=an;rig.updateMatrixWorld(true);const H2=new V3();cam.getWorldPosition(H2);rig.position.x+=HW.x-H2.x;rig.position.z+=HW.z-H2.z;}
+
+  /* --- sprite (label, nyala, asap, lampu) tidak ikut skala kamera di three.js: dikoreksi 1/skala-rig saat digambar --- */
+  let hooked=[];const KV=new V3();
+  function hookSprites(on){hooked.forEach(o=>{delete o.onBeforeRender;delete o.onAfterRender;});hooked=[];if(!on)return;
+    scene.traverse(o=>{if(!o.isSprite||o.hasOwnProperty('onBeforeRender'))return;const M=new THREE.Matrix4();
+      o.onBeforeRender=function(){M.copy(this.matrixWorld);const k=1/rig.scale.x;this.matrixWorld.scale(KV.set(k,k,k));};
+      o.onAfterRender=function(){this.matrixWorld.copy(M);};hooked.push(o);});}
+  /* --- masuk / keluar --- */
+  let saved=null;
+  function enterCommon(){if(window.WALKON&&window.WALK)try{WALK.exit();}catch(e){}try{if(window.TV&&TV.line){TV.rotate&&TV.rotate(false);TV.close();}}catch(e){}
+    saved={p:cam.position.clone(),q:cam.quaternion.clone(),fov:cam.fov,up:controls.update,en:controls.enabled,fog:scene.fog,shadowAU:renderer.shadowMap.autoUpdate};
+    fog0=scene.fog;controls.enabled=false;controls.update=()=>false;fly=null;scene.add(rig);scene.add(world);world.visible=true;rig.add(cam);cam.position.set(0,eyeH(),0);cam.quaternion.identity();
+    renderer.shadowMap.autoUpdate=false;renderer.shadowMap.needsUpdate=true;document.body.classList.add('vrmode');buildLabels();setMode(mode);hookSprites(true);}
+  function exitCommon(){hookSprites(false);setClip(false);rig.remove(cam);scene.remove(rig);scene.remove(world);world.visible=false;
+    if(saved){cam.position.copy(saved.p);cam.quaternion.copy(saved.q);cam.fov=saved.fov;cam.updateProjectionMatrix();controls.update=saved.up;controls.enabled=saved.en;scene.fog=saved.fog;renderer.shadowMap.autoUpdate=saved.shadowAU;}
+    renderer.shadowMap.needsUpdate=true;document.body.classList.remove('vrmode','vrprev');saved=null;try{controls.update();}catch(e){}}
+  async function enter(){if(!xr||session||prev)return;try{
+      const s=await xr.requestSession('immersive-vr',{optionalFeatures:['local-floor','bounded-floor']});
+      try{await s.requestReferenceSpace('local-floor');refType='local-floor';}catch(e){refType='local';}
+      renderer.xr.enabled=true;renderer.xr.setReferenceSpaceType(refType);try{if(renderer.xr.setFoveation)renderer.xr.setFoveation(1);}catch(e){}
+      if(!ctrls.length){mkCtrl(0);mkCtrl(1);}
+      await renderer.xr.setSession(s);session=s;
+      toXR();enterCommon();renderer.setAnimationLoop(t=>{try{tick(t);}catch(e){console.warn('VR tick',e);}flush(t);});
+      s.addEventListener('end',onEnd);
+    }catch(e){console.warn('VR',e);session=null;renderer.xr.enabled=false;note('VR tidak bisa dibuka di sini'+(e&&e.message?': '+e.message:'')+'. Buka peta dari alamat https di browser headset.');}}
+  function onEnd(){renderer.setAnimationLoop(null);session=null;renderer.xr.enabled=false;exitCommon();fromXR();}
+  function exit(){if(session){session.end().catch(()=>onEnd());return;}if(prev)stopPreview();}
+
+  /* --- pratinjau di PC (tanpa headset): #vr-preview-meja / #vr-preview-jalan. Klik = trigger, panah = stik. --- */
+  let pvRaf=0;
+  function preview(m){if(session)return;if(!prev){prev=true;mode=m||'meja';enterCommon();document.body.classList.add('vrprev');cam.fov=70;cam.updateProjectionMatrix();
+      if(!ctrls.length){mkCtrl(0);mkCtrl(1);}addEventListener('pointerdown',pvBlock,true);addEventListener('pointerup',pvClick,true);addEventListener('wheel',pvBlock,{capture:true,passive:false});addEventListener('keydown',pvKey,true);
+      const f=t=>{if(!prev)return;try{tick(t);}catch(e){console.warn(e);}pvRaf=_raf(f);};pvRaf=_raf(f);}else setMode(m||mode);
+    cam.position.set(0,eyeH(),0);cam.rotation.set(mode==='meja'?-.62:-.08,0,0);}
+  function stopPreview(){if(!prev)return;prev=false;_caf(pvRaf);removeEventListener('pointerdown',pvBlock,true);removeEventListener('pointerup',pvClick,true);removeEventListener('wheel',pvBlock,true);removeEventListener('keydown',pvKey,true);exitCommon();}
+  function pvBlock(e){if(e.target===renderer.domElement){e.stopImmediatePropagation();e.preventDefault&&e.cancelable&&e.preventDefault();}}
+  function pvClick(e){if(e.target!==renderer.domElement)return;e.stopImmediatePropagation();const r=renderer.domElement.getBoundingClientRect(),m=new THREE.Vector2((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1);
+    cam.updateMatrixWorld(true);const rc=new THREE.Raycaster();rc.setFromCamera(m,cam);act(hitTest(rc.ray));}
+  function pvKey(e){const k=e.key;if(k==='Escape'){e.stopImmediatePropagation();location.hash='';stopPreview();return;}
+    const map={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[k];if(!map)return;e.stopImmediatePropagation();e.preventDefault();
+    if(mode==='meja')stick('right',map[0]*.9,map[1]*.9,.12);else if(map[0])snapTurn(map[0]>0?-Math.PI/6:Math.PI/6);else{cam.getWorldPosition(HW);const f=new V3(0,0,-1).applyQuaternion(cam.getWorldQuaternion(new THREE.Quaternion()));f.y=0;f.normalize().multiplyScalar(-map[1]*10/MU);teleport(HW.clone().add(f));}}
+  function route(){const h=location.hash.slice(1);if(h==='vr-preview-meja')preview('meja');else if(h==='vr-preview-jalan')preview('jalan');}
+  addEventListener('hashchange',route);setTimeout(route,1500);
+
+  /* --- tombol "VR" di rel kanan: hanya bila immersive-vr didukung --- */
+  let btn=null;
+  function note(t){try{const el=document.getElementById('toast'),tt=document.getElementById('toastT');if(el&&tt){tt.textContent=t;el.hidden=false;setTimeout(()=>{el.hidden=true;},6000);return;}}catch(e){}console.warn(t);}
+  (()=>{const r=document.getElementById('vrail');if(!r||!xr||!xr.isSessionSupported)return;btn=document.createElement('button');btn.type='button';btn.id='vVR';btn.hidden=true;btn.title='Masuk mode VR (headset)';btn.setAttribute('aria-label',btn.title);
+    btn.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5A1.5 1.5 0 0 1 4.5 7h15A1.5 1.5 0 0 1 21 8.5v6a1.5 1.5 0 0 1-1.5 1.5h-4l-2-2.5h-3L8.5 16h-4A1.5 1.5 0 0 1 3 14.5z"/><circle cx="8" cy="11.5" r="1.6"/><circle cx="16" cy="11.5" r="1.6"/></svg><span>VR</span>';
+    btn.onclick=()=>enter();r.append(btn);xr.isSessionSupported('immersive-vr').then(ok=>{btn.hidden=!ok;}).catch(()=>{});})();
+  return {enter,exit,preview,stopPreview,get on(){return !!session||prev;},get mode(){return mode;},setMode(m){if(session||prev)setMode(m);},get supported(){return !!(btn&&!btn.hidden);}};
+})();
+
 </script>
 
 </body></html>

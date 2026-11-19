@@ -153,7 +153,7 @@ Per Sistem, daftar RCA yang masih terbuka (FR-RCA-08/09):
 
 ### Geofence (`geofence`)
 
-Per Sistem (FR-AST-03): `"geofence": { "r": 50, "lat": -4.1835, "lon": 121.6402 }`, radius dalam meter. Lingkaran digambar di peta saat kartu peralatan dibuka. Tanpa `lat`/`lon`, titik pusatnya posisi aset di peta. Agar `lat`/`lon` tepat di peta, isi `FENI_CONFIG.geoRef` dengan dua titik acuan `[{lat,lon,x,y},{lat,lon,x,y}]` (x, y = koordinat peta); peta sudah memakai dua titik acuan bawaan dari screenshot Google Earth berkisi koordinat (ketelitian ±30 m); isi `geoRef` sendiri bila punya titik ukur GPS yang lebih tepat.
+Per Sistem (FR-AST-03): `"geofence": { "r": 50, "lat": -4.1835, "lon": 121.6402 }`, radius dalam meter. Lingkaran digambar di peta saat kartu peralatan dibuka. Tanpa `lat`/`lon`, titik pusatnya posisi aset di peta. Agar `lat`/`lon` tepat di peta, isi `FENI_CONFIG.geoRef` dengan dua titik acuan `[{lat,lon,x,y},{lat,lon,x,y}]` (x, y = koordinat peta); peta sudah memakai dua titik acuan bawaan dari Google Maps (ujung RD4 dan ujung timur RK4, lihat §5b); isi `geoRef` sendiri bila punya titik ukur GPS yang lebih tepat.
 
 Per Line, di tingkat atas, dengan isi `metrics` yang sama:
 
@@ -323,7 +323,7 @@ Stok di bawah `min` ditandai merah di kartu. Rumus kepatuhan PM dan umur backlog
 
 ## 5b. Belum ada di peta (usulan berikutnya)
 
-Kalibrasi `geoRef` bawaan: ±30 m (dari kisi koordinat Google Earth). Bisa diperbaiki dengan dua titik ukur GPS di lapangan.
+Kalibrasi `geoRef` bawaan (v3.78): dua titik dari Google Maps, yaitu ujung RD4 sisi hot gas chamber (-4.185083, 121.613013) dan ujung timur RK4 (-4.185958, 121.611425), dicocokkan ke citra peta. Selisih dengan kalibrasi lama ±1,5 m; ketelitian mutlak mengikuti georeferensi citra Google. Titik ukur GPS lapangan tetap bisa dipakai untuk memastikan.
 
 ## 6. Catatan
 
