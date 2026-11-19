@@ -6157,22 +6157,41 @@ window.VRX=(()=>{
   function wrapT(c,t,maxW){const w=String(t||'').split(/\s+/),L=[];let s='';w.forEach(x=>{const n=s?s+' '+x:x;if(c.measureText(n).width>maxW&&s){L.push(s);s=x;}else s=n;});if(s)L.push(s);return L;}
 
   /* --- menu (kiri) --- */
-  const BTN=[['meja','Meja'],['jalan','Jalan'],['label','Label'],['keluar','Keluar']];
+  const BTN=[['meja','Meja'],['jalan','Jalan'],['tur','Tur'],['label','Label'],['keluar','Keluar']];
+  /* --- tur proses RD → RK → ESF (mode meja). Angka dari data peta (UBPNK, PPT Orientation, gambar plant); baris maintenance = pengetahuan industri umum --- */
+  const STOPS=[
+    {ids:[],t:'Gambaran plant',x:'Bijih nikel basah diolah 3 tahap: dikeringkan (RD), dikalsinasi (RK), lalu dilebur (ESF). Tiga line beroperasi: Line 4, Line 2 dan Line 3.',m:'Status tiap alat di peta diambil dari CMMS (sekarang data contoh).'},
+    {ids:['RD4'],t:'RD4 · Rotary dryer',x:'Mengeringkan bijih dari ±34% ke ±21% air dengan gas panas 400–800 °C. Kapasitas 260 t/j, memasok RK4 dan RK2.',m:'Tyre & roller, girth gear, burner / hot gas chamber.'},
+    {ids:['RD3'],t:'RD3 · Rotary dryer',x:'Kapasitas 130 t/j, khusus memasok Line 3 (RK3).',m:'Tyre & roller, girth gear, burner / hot gas chamber.'},
+    {ids:['RK4'],t:'RK4 · Rotary kiln',x:'Kiln 100 m memanaskan bijih dan batubara bertahap, 300 sampai 1.000 °C. Kapasitas 90 t/j; calcine keluar ±669 °C dengan LOI ≤ 1%.',m:'Refraktori (hot spot shell), seal inlet/outlet, main drive.'},
+    {ids:['RK2','RK3'],t:'RK2 & RK3 · Rotary kiln',x:'RK2 60 t/j memasok ESF2. RK3 kiln terbesar: 130 t/j, 101 m, memasok ESF3.',m:'Thermocouple dan pemantauan suhu shell.'},
+    {ids:['ESF4'],t:'ESF4 · Electric smelting furnace',x:'Furnace 38 MW melebur 75 t/j calcine. Logam FeNi ±1.485 °C ke ladle 25 t; slag ±1.575 °C ke kolam slag.',m:'Elektroda dan sistem pendingin (shell sprayer).'},
+    {ids:['ESF3'],t:'ESF3 · Electric smelting furnace',x:'Furnace terbesar: 42 MW, 80 t/j calcine, hearth 225 m², 10 top bin @55 t.',m:'Elektroda dan sistem pendingin.'},
+    {ids:[],t:'Pemantauan maintenance',x:'Status tiap alat tampil langsung dari CMMS: merah = breakdown, biru = sedang diperbaiki. Lokasi masalah dan dampaknya ke proses langsung terlihat.',m:''}];
+  let tour=null;
   const menu=canvasPlane(880,200,.44);menu.m.name='vrMenu';let mHover=-1;
   function drawMenu(){const c=menu.cx,W=880,H=200;c.clearRect(0,0,W,H);rr(c,4,4,W-8,H-8,26);c.fillStyle='rgba(16,21,25,.92)';c.fill();c.lineWidth=3;c.strokeStyle='#3b4a54';c.stroke();
-    const bw=(W-40-30)/4;BTN.forEach(([k,n],i)=>{const x=20+i*(bw+10),y=46,act=(k===mode)||(k==='label'&&lblOn);rr(c,x,y,bw,130,18);
+    const nb=BTN.length,bw=(W-40-10*(nb-1))/nb;BTN.forEach(([k,n],i)=>{const x=20+i*(bw+10),y=46,act=(k===mode)||(k==='label'&&lblOn)||(k==='tur'&&!!tour);rr(c,x,y,bw,130,18);
       c.fillStyle=i===mHover?'#2c6e8f':act?'#3a2a12':'#222b31';c.fill();c.lineWidth=act?5:2;c.strokeStyle=act?'#e8a23c':'#4a5963';c.stroke();
-      c.fillStyle='#f2f4f5';c.font='600 46px '+FONT;c.textAlign='center';c.fillText(n,x+bw/2,y+80);});
+      c.fillStyle='#f2f4f5';c.font='600 40px '+FONT;c.textAlign='center';c.fillText(n,x+bw/2,y+78);});
     c.textAlign='left';c.fillStyle='#9fb0ba';c.font='500 26px '+FONT;c.fillText('FeNi Pomalaa · mode VR',24,34);menu.tx.needsUpdate=true;}
   /* --- panel info (kanan) --- */
   const info=canvasPlane(1100,760,.6);info.m.name='vrInfo';let infoKey='',hoverName='';
   function stateOf(a){if(a.idle)return {n:'TIDAK BEROPERASI',c:'#8f9aa1'};try{const k=COND.state(a.id),s=COND.ST[k];if(s)return {n:s.n,c:s.c};}catch(e){}return {n:'RUNNING',c:'#5cb874'};}
   function sampleTag(){try{return COND.demo||COND.isSample()||COND.source()==='none';}catch(e){return true;}}
-  function drawInfo(force){const a=sel;let rows=null;try{rows=a?COND.mrow(a.id):null;}catch(e){}
+  function drawTour(force){const S0=STOPS[tour.i],pg=Math.min(1,tour.t/tour.dur),key='T|'+tour.i+'|'+Math.floor(pg*24);if(!force&&key===infoKey)return;infoKey=key;
+    const c=info.cx,W=1100,H=760;c.clearRect(0,0,W,H);rr(c,4,4,W-8,H-8,30);c.fillStyle='rgba(16,21,25,.94)';c.fill();c.lineWidth=4;c.strokeStyle='#e8a23c';c.stroke();c.textAlign='left';
+    let y=64;c.fillStyle='#e8c070';c.font='700 28px '+FONT;c.fillText('TUR PROSES · '+(tour.i+1)+'/'+STOPS.length,40,y);y+=66;
+    c.fillStyle='#f2f4f5';c.font='700 56px '+FONT;c.fillText(S0.t,40,y);y+=64;
+    c.fillStyle='#dfe5e8';c.font='500 38px '+FONT;wrapT(c,S0.x,W-80).slice(0,5).forEach(l=>{c.fillText(l,40,y);y+=50;});
+    if(S0.m){y+=22;c.fillStyle='#e8a23c';c.font='700 24px '+FONT;c.fillText('TITIK PERHATIAN MAINTENANCE (UMUM)',40,y);y+=44;c.fillStyle='#cfd8dc';c.font='500 34px '+FONT;wrapT(c,S0.m,W-80).slice(0,2).forEach(l=>{c.fillText(l,40,y);y+=46;});}
+    rr(c,40,H-92,W-80,12,6);c.fillStyle='#2a343a';c.fill();rr(c,40,H-92,Math.max(12,(W-80)*pg),12,6);c.fillStyle='#e8a23c';c.fill();
+    c.fillStyle='#7f9099';c.font='500 26px '+FONT;c.fillText('Trigger ke panel ini: lanjut · Menu "Tur": berhenti',40,H-34);info.tx.needsUpdate=true;}
+  function drawInfo(force){if(tour)return drawTour(force);const a=sel;let rows=null;try{rows=a?COND.mrow(a.id):null;}catch(e){}
     const st=a?stateOf(a):null,key=[a?a.id:'',st?st.n:'',JSON.stringify(rows||''),hoverName,mode,sampleTag()].join('|');if(!force&&key===infoKey)return;infoKey=key;
     const c=info.cx,W=1100,H=760;c.clearRect(0,0,W,H);rr(c,4,4,W-8,H-8,30);c.fillStyle='rgba(16,21,25,.93)';c.fill();c.lineWidth=4;c.strokeStyle=a?st.c:'#3b4a54';c.stroke();c.textAlign='left';
     let y=70;if(!a){c.fillStyle='#f2f4f5';c.font='700 54px '+FONT;c.fillText('Arahkan & tekan trigger',40,y+10);y+=80;c.font='500 34px '+FONT;c.fillStyle='#c9d3d8';
-      const tips=mode==='meja'?['Trigger ke peralatan: lihat info','Stik kiri/kanan: putar maket','Stik maju/mundur: perbesar/perkecil','Menu kiri: ganti ke mode Jalan']
+      const tips=mode==='meja'?['Trigger ke peralatan: lihat info','Stik kiri/kanan: putar maket','Stik maju/mundur: perbesar/perkecil','Menu kiri: Tur proses atau mode Jalan']
         :['Trigger ke peralatan: lihat info','Trigger ke tanah: pindah (teleport)','Stik kiri/kanan: belok 30°','Menu kiri: kembali ke mode Meja'];
       tips.forEach(t=>{c.fillText('• '+t,44,y);y+=56;});}
     else{c.fillStyle='#9fb0ba';c.font='600 30px '+FONT;c.fillText(((CAT[a.cat]||{}).n||'').toUpperCase(),40,y-6);y+=52;
@@ -6212,16 +6231,27 @@ window.VRX=(()=>{
   const RECT={x0:SG.cx-SG.w/2,x1:SG.cx+SG.w/2,z0:SG.cz-SG.h/2,z1:SG.cz+SG.h/2};
   const inRect=p=>p.x>=RECT.x0&&p.x<=RECT.x1&&p.z>=RECT.z0&&p.z<=RECT.z1;
   function hitTest(ray){RC.ray.copy(ray);RC.near=0;RC.far=Infinity;RC.camera=cam;
-    const u=RC.intersectObjects([menu.m,info.m],false)[0];if(u){if(u.object===menu.m){const i=Math.min(3,Math.max(0,Math.floor((u.uv.x*880-20)/((880-70)/4+10))));return {k:'menu',i,pt:u.point,d:u.distance};}return {k:'info',pt:u.point,d:u.distance};}
+    const u=RC.intersectObjects([menu.m,info.m],false)[0];if(u){if(u.object===menu.m){const nb=BTN.length,bw=(880-40-10*(nb-1))/nb,i=Math.min(nb-1,Math.max(0,Math.floor((u.uv.x*880-20)/(bw+10))));return {k:'menu',i,pt:u.point,d:u.distance};}return {k:'info',pt:u.point,d:u.distance};}
     for(const h of RC.intersectObjects(objs,true)){const o=h.object,a=o.userData.a;if(!a||a.hidden||o.isLine||!isVis(o))continue;if(o.userData.xray&&(a.near||a.floorSel))continue;
       if(mode==='meja'&&!inRect(h.point))continue;return {k:'eq',a,pt:h.point,d:h.distance};}
     if(mode==='jalan'){const p=new V3();if(RC.ray.intersectPlane(new THREE.Plane(UP,0),p))return {k:'ground',pt:p,d:RC.ray.origin.distanceTo(p)};}
     return null;}
-  function act(h){if(!h){if(sel&&mode==='meja'){try{closeCard();}catch(e){}drawInfo(true);}return;}
-    if(h.k==='menu'){const k=BTN[h.i][0];if(k==='keluar'){exit();return;}if(k==='label'){lblOn=!lblOn;labels.forEach(l=>l.s.visible=lblOn);drawMenu();return;}setMode(k);return;}
-    if(h.k==='eq'){try{select(h.a,false);}catch(e){console.warn(e);}drawInfo(true);return;}
+  function act(h){if(!h){if(tour)return;if(sel&&mode==='meja'){try{closeCard();}catch(e){}drawInfo(true);}return;}
+    if(h.k==='menu'){const k=BTN[h.i][0];if(k==='keluar'){exit();return;}if(k==='label'){lblOn=!lblOn;labels.forEach(l=>l.s.visible=lblOn);drawMenu();return;}
+      if(k==='tur'){if(tour)endTour();else startTour();return;}if(tour)endTour(true);setMode(k);return;}
+    if(h.k==='info'&&tour){nextStop();return;}
+    if(h.k==='eq'){if(tour)endTour(true);try{select(h.a,false);}catch(e){console.warn(e);}drawInfo(true);return;}
     if(h.k==='ground'&&mode==='jalan'){teleport(h.pt);return;}
     if(h.k==='info')return;}
+  // penanda kerucut di atas alat yang sedang dibahas
+  const mkM=()=>{const m=new THREE.Mesh(new THREE.ConeGeometry(.5,1.2,24),new THREE.MeshBasicMaterial({color:0xe8a23c,transparent:true,opacity:.95,depthTest:false}));m.rotation.x=Math.PI;m.renderOrder=26;m.raycast=()=>{};m.visible=false;world.add(m);return m;};
+  const marks=[mkM(),mkM()];
+  function startTour(){if(mode!=='meja')setMode('meja');tour={i:-1,t:0,dur:6};nextStop();drawMenu();}
+  function nextStop(){if(!tour)return;tour.i++;if(tour.i>=STOPS.length){endTour();return;}const S0=STOPS[tour.i];tour.t=0;tour.t0=performance.now();
+    const words=(S0.x+' '+S0.m).split(/\s+/).length;tour.dur=Math.min(10,Math.max(5,3+words*.17));
+    const as=S0.ids.map(byId).filter(Boolean);marks.forEach((m,k)=>{const a=as[k];m.visible=!!a;if(!a)return;const b=new THREE.Box3().setFromObject(a.group);m.userData.y=(isFinite(b.max.y)?b.max.y:1)+.25;m.position.set(a.group.position.x,m.userData.y,a.group.position.z);});
+    try{if(as[0])select(as[0],false);else if(sel)closeCard();}catch(e){}drawInfo(true);}
+  function endTour(quiet){tour=null;marks.forEach(m=>m.visible=false);if(!quiet){try{if(sel)closeCard();}catch(e){}}drawMenu();drawInfo(true);}
   function teleport(p){cam.getWorldPosition(HW);rig.position.x+=p.x-HW.x;rig.position.z+=p.z-HW.z;}
 
   /* --- mode --- */
@@ -6253,6 +6283,7 @@ window.VRX=(()=>{
     const g=ctrls.find(o=>o.hit&&o.hit.k==='ground');tpM.visible=!!g&&mode==='jalan';if(g)tpM.position.set(g.hit.pt.x,.05,g.hit.pt.z);
     const mh=ctrls.find(o=>o.hit&&o.hit.k==='menu'),nh=mh?mh.hit.i:-1;if(nh!==mHover){mHover=nh;drawMenu();}
     if(anyHover!==hoverName){hoverName=anyHover;}
+    if(tour){tour.t=(performance.now()-tour.t0)/1000;if(tour.t>=tour.dur)nextStop();cam.getWorldPosition(HW);marks.forEach(m=>{if(!m.visible)return;const d=HW.distanceTo(m.position),k=d*.04;m.scale.setScalar(k);m.position.y=m.userData.y+d*.03+k*(.95+.25*Math.sin(t/260));});}
     lblT+=dt;if(lblT>1){lblT=0;refreshLabels();}drawInfo(false);scaleLabels();}
   function stick(hand,x,y,dt){if(mode==='meja'){let ch=false;if(Math.abs(x)>.15){theta-=x*dt*1.1;ch=true;}if(Math.abs(y)>.15){S=Math.min(170,Math.max(18,S*Math.exp(y*dt*.9)));ch=true;}if(ch)placeMeja();return;}
     const o=ctrls.find(c=>c.src&&c.src.handedness===hand)||ctrls[0];if(Math.abs(x)<.3)o.turnL=false;else if(Math.abs(x)>.7&&!o.turnL){o.turnL=true;snapTurn(x>0?-Math.PI/6:Math.PI/6);}}
@@ -6270,7 +6301,7 @@ window.VRX=(()=>{
     saved={p:cam.position.clone(),q:cam.quaternion.clone(),fov:cam.fov,up:controls.update,en:controls.enabled,fog:scene.fog,shadowAU:renderer.shadowMap.autoUpdate};
     fog0=scene.fog;controls.enabled=false;controls.update=()=>false;fly=null;scene.add(rig);scene.add(world);world.visible=true;rig.add(cam);cam.position.set(0,eyeH(),0);cam.quaternion.identity();
     renderer.shadowMap.autoUpdate=false;renderer.shadowMap.needsUpdate=true;document.body.classList.add('vrmode');buildLabels();setMode(mode);hookSprites(true);}
-  function exitCommon(){hookSprites(false);setClip(false);rig.remove(cam);scene.remove(rig);scene.remove(world);world.visible=false;
+  function exitCommon(){if(tour){tour=null;marks.forEach(m=>m.visible=false);}hookSprites(false);setClip(false);rig.remove(cam);scene.remove(rig);scene.remove(world);world.visible=false;
     if(saved){cam.position.copy(saved.p);cam.quaternion.copy(saved.q);cam.fov=saved.fov;cam.updateProjectionMatrix();controls.update=saved.up;controls.enabled=saved.en;scene.fog=saved.fog;renderer.shadowMap.autoUpdate=saved.shadowAU;}
     renderer.shadowMap.needsUpdate=true;document.body.classList.remove('vrmode','vrprev');saved=null;try{controls.update();}catch(e){}}
   async function enter(){if(!xr||session||prev)return;try{
