@@ -1105,7 +1105,7 @@ body.vrprev #panel,body.vrprev #vrail,body.vrprev #card,body.vrprev #labels,body
 
 <header id="panel">
   <div class="top">
-    <div style="display:flex;flex-direction:column;gap:6px"><span class="tag">UBPN Sultra · Pomalaa · Schematic v3.80</span><h1>FeNi Plant Pomalaa</h1></div>
+    <div style="display:flex;flex-direction:column;gap:6px"><span class="tag">UBPN Sultra · Pomalaa · Schematic v3.81</span><h1>FeNi Plant Pomalaa</h1></div>
     <div class="ctrl topb"><button id="helpB" type="button" aria-expanded="false" aria-controls="helpM" aria-label="Bantuan dan glosarium" title="Bantuan dan glosarium">?</button><button id="infoB" type="button" aria-expanded="false" aria-controls="infoM" aria-label="Tentang peta ini" title="Tentang peta ini">i</button><button id="moreB" type="button" aria-expanded="false" aria-controls="moreM" aria-label="Menu lainnya" title="Lainnya">⋯</button><button id="toggle" type="button">Menu</button></div>
   </div>
   <div class="infobox helpbox" id="helpM" hidden><b>Cara pakai</b>
@@ -5346,7 +5346,7 @@ window.SYS=SYS;
    (2) window.postMessage from the page that embeds the map: {type:'feni:data', data:{...}}, (3) FENI.setData({...}) from script.
    Data shape (see SPESIFIKASI-DATA.md): { source, updated, sample, equipment:{ "<map id or CMMS system name>":{state,note,at,wo:[...]} }, wo:[{system,...}] } ---- */
 const FEED=(()=>{
-  const C=Object.assign({dataUrl:'data/kondisi.json',refresh:60,mode:'',parentOrigin:'',assetMap:{}},window.FENI_CONFIG||{});
+  const C=Object.assign({dataUrl:'data/kondisi.json',refresh:60,mode:'',parentOrigin:'',assetMap:{},assetUrl:''},window.FENI_CONFIG||{});
   try{const m=document.querySelector('meta[name="feni-data"]');if(m&&m.content)C.dataUrl=m.content;}catch(e){}
   const n=s=>String(s==null?'':s).toLowerCase().replace(/[^a-z0-9]+/g,'');
   // the six Andon statuses of the CMMS (BRD §6.7), plus a few plain words for hand-made files
@@ -5355,6 +5355,12 @@ const FEED=(()=>{
     // FENI_CONFIG.assetMap: CMMS asset id or tag -> map item or system name, e.g. {"3-RK":"Rotary Kiln 3"}
     Object.entries(C.assetMap||{}).forEach(([k,v])=>{const t=LK[n(v)];if(t)LK[n(k)]=t;});}catch(e){}
   const resolve=k=>LK[n(k)]||null;
+  // v3.81: FENI_CONFIG.assetUrl (mis. /api/peta/aset) — padanan ID/tag aset CMMS → Sistem di peta + geofence per aset. Dibaca sekali sebelum data kondisi.
+  const GEO={};let assetInfo={n:0,unmapped:[]};
+  async function loadAssets(){if(!C.assetUrl)return;try{const r=await fetch(C.assetUrl,{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json(),L=Array.isArray(d)?d:(d.assets||[]);
+      L.forEach(x=>{if(!x||typeof x!=='object')return;const t=LK[n(x.mapId)]||LK[n(x.system)]||LK[n(x.name)];if(!t){assetInfo.unmapped.push(String(x.id||x.system||''));return;}
+        [x.id,x.tag,x.code].forEach(k=>{if(k)LK[n(k)]=t;});const g=x.geofence||x.geo;if(g&&+(g.r||g.radius)>0)GEO[t]={r:+(g.r||g.radius),lat:g.lat!=null?+g.lat:null,lon:(g.lon!=null||g.lng!=null)?+(g.lon!=null?g.lon:g.lng):null};assetInfo.n++;});
+    }catch(e){console.warn('[FEED] gagal membaca aset',e);assetInfo.err=String(e&&e.message||e);}}
   let last=null,okOnce=false,info={via:'',at:0,err:''};
   function apply(d,via){if(!d||typeof d!=='object')throw new Error('data kosong atau bukan objek');const out={},un=[];
     const slot=k=>{const id=resolve(k);if(!id){if(k&&!un.includes(String(k)))un.push(String(k));return null;}return out[id]||(out[id]={state:'run',wo:[]});};
@@ -5370,6 +5376,7 @@ const FEED=(()=>{
     if(Array.isArray(d.wo))d.wo.forEach(w=>{const o=slot(w.system||w.equipment||w.sistem);if(o)o.wo.push(woN(w));});
     const LN=[],ln=d.lines,lnm=k=>{const m=String(k).match(/\d+/);return m?'Line '+m[0]:String(k);},lput=(k,r)=>{if(!r||typeof r!=='object')return;const M=mN(r.metrics||r.kinerja||r);if(M.length)LN.push({name:lnm(r.line||r.name||k),metrics:M});};
     if(Array.isArray(ln))ln.forEach(r=>lput('',r));else if(ln&&typeof ln==='object')Object.entries(ln).forEach(([k,r])=>lput(k,r));
+    Object.entries(GEO).forEach(([id,g])=>{if(!out[id])out[id]={state:'run',wo:[]};if(!out[id].geofence)out[id].geofence=g;});
     COND.set(out,{targets:(d.targets&&typeof d.targets==='object')?d.targets:null,lines:LN,sample:!!d.sample,updated:d.updated||d.updatedAt||'',name:d.source||'CMMS',unmapped:un});last=d;try{if(window.UI6)UI6.set(d);}catch(e){}info={via,at:Date.now(),err:''};return {mapped:Object.keys(out).length,unmapped:un};}
   async function pull(){if(!C.dataUrl)return;try{const r=await fetch(C.dataUrl,{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);apply(await r.json(),'url');okOnce=true;}catch(e){info.err=String(e&&e.message||e);if(okOnce)console.warn('[FEED] gagal memperbarui data',e);}}
   const post=o=>{try{if(C.parentOrigin&&parent!==window)parent.postMessage(o,C.parentOrigin);}catch(e){}};
@@ -5377,10 +5384,10 @@ const FEED=(()=>{
     try{if(m.type==='feni:data')apply(m.data,'pesan');else if(m.type==='feni:select'){const a=byId(resolve(m.id));if(a){select(a,true);COND.openTab();}}else if(m.type==='feni:clear'){COND.set({},null);}}catch(e){console.warn('[FEED]',e);}});
   // tell the embedding page which equipment was opened
   let lastSel='';const lc=window.layoutCard;window.layoutCard=function(a,s){lc(a,s);try{if(a&&a.id!==lastSel){lastSel=a.id;post({type:'feni:selected',id:a.id,name:a.disp||a.id});}}catch(e){}};
-  setTimeout(()=>{pull().then(()=>{if(okOnce)setInterval(pull,Math.max(15,+C.refresh||60)*1000);});post({type:'feni:ready'});},900);
+  setTimeout(()=>{loadAssets().then(pull).then(()=>{if(okOnce)setInterval(pull,Math.max(15,+C.refresh||60)*1000);});post({type:'feni:ready'});},900);
   // work face: opened with #kerja or FENI_CONFIG.mode='kerja' — condition list first, presentation buttons out of the way
   try{if(C.mode==='kerja'||location.hash==='#kerja'){document.body.classList.add('kerja');COND.box.open=true;}}catch(e){}
-  return {config:C,apply,resolve,pull,get info(){return info;},get last(){return last;}};
+  return {config:C,apply,resolve,pull,loadAssets,get info(){return info;},get last(){return last;},get assets(){return assetInfo;}};
 })();
 window.FEED=FEED;window.FENI={setData:d=>FEED.apply(d,'skrip'),clear:()=>COND.set({},null),select:id=>{const a=byId(FEED.resolve(id));if(a){select(a,true);COND.openTab();}return !!a;},config:FEED.config};
 
@@ -5530,6 +5537,11 @@ window.SAT=(()=>{let mesh=null,on=false,ok=false;const attr=document.createEleme
 const RANGE=(()=>{
   const $=id=>document.getElementById(id);
   const C=window.FENI_CONFIG||{},URL_=C.historyUrl||'data/riwayat.json';
+  // v3.81: FENI_CONFIG.historyRange=true → API riwayat diminta per rentang: historyUrl?from=YYYY-MM-DD&to=YYYY-MM-DD (termasuk satu periode sebelumnya untuk pembanding).
+  const RMODE=!!C.historyRange,p2=x=>String(x).padStart(2,'0'),isoD=x=>x.getFullYear()+'-'+p2(x.getMonth()+1)+'-'+p2(x.getDate()),addD=(d,k)=>{const x=new Date(d+'T00:00:00');x.setDate(x.getDate()+k);return isoD(x);};
+  const nDays=(f,t)=>Math.round((new Date(t+'T00:00:00')-new Date(f+'T00:00:00'))/864e5)+1;let LW=null,rq=0;
+  function qurl(f,t){return URL_+(URL_.includes('?')?'&':'?')+'from='+f+'&to='+t;}
+  function fetchWin(f,t){return fetch(qurl(f,t),{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null);}
   const mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;};
   const ALIAS={'Jetty Pomalaa':'Jetty (existing)','Gudang':'Gudang'};
   /* v3.65: lokasi PERKIRAAN untuk Sistem CMMS yang belum punya tempat di peta (dasar: nama sub-sistem/equipment di data; perlu konfirmasi user) */
@@ -5566,7 +5578,8 @@ const RANGE=(()=>{
     const sp=(b-a)/H;o.mttr=o.cmh.length?o.cmh.reduce((p,q)=>p+q,0)/o.cmh.length:null;o.pa=sp?100*(sp-o.bdh)/sp:null;o.mtbf=o.bdn?(sp-o.bdh)/o.bdn:null;return o;}
   const sel_=()=>R.filter(r=>inR(r)&&fOK(r)),selP=()=>{const P=prevSpan();return R.filter(r=>inS(r,P)&&fOK(r));},hasPrev=()=>prevSpan()[1]>T(min+'T00:00');
   const bySys=rs=>{const m={};rs.forEach(r=>{const k=r.id||'#'+r.sys;(m[k]=m[k]||[]).push(r);});return m;};
-  function setRange(f,t){if(!D)return;cache=null;ck='';f=f<min?min:f>max?max:f;t=t<min?min:t>max?max:t;if(t<f)[f,t]=[t,f];from=f;to=t;more=false;draw();refresh();try{if(sel&&!$('card').hidden)layoutCard(sel,selSub);}catch(e){}}
+  function setRange(f,t){if(!D)return;cache=null;ck='';f=f<min?min:f>max?max:f;t=t<min?min:t>max?max:t;if(t<f)[f,t]=[t,f];from=f;to=t;more=false;draw();refresh();try{if(sel&&!$('card').hidden)layoutCard(sel,selSub);}catch(e){}
+    if(RMODE){const sp=nDays(f,t),nf=sp>200?f:addD(f,-sp),my=++rq;if(!LW||nf<LW[0]||t>LW[1])fetchWin(nf,t).then(d=>{if(my!==rq||!d||!Array.isArray(d.records))return;R=d.records.map(r=>Object.assign({},r,{id:idOf(r.sys,r.sub)}));D=Object.assign({},D,d);LW=[nf,t];cache=null;ck='';draw();refresh();try{if(sel&&!$('card').hidden)layoutCard(sel,selSub);}catch(e){}});}}
   const lab2=([a,b])=>{const f=new Date(a),t=new Date(b-1),o={day:'numeric',month:'short'};return f.toDateString()===t.toDateString()?f.toLocaleDateString('id-ID',o):f.toLocaleDateString('id-ID',o)+' – '+t.toLocaleDateString('id-ID',o);};
   function dl(v,p,u){const e=mk('small','dl');if(v==null||p==null){e.textContent='';return e;}const d=v-p;if(Math.abs(d)<1e-9){e.textContent='= sama';return e;}e.className='dl '+(d>0?'up':'dn');e.textContent=(d>0?'▲ +':'▼ ')+nf(d)+(u?' '+u:'');e.title='Periode sebelumnya: '+nf(p)+(u?' '+u:'');return e;}
   const norm=s=>String(s||'').trim().replace(/\s+/g,' ');
@@ -5633,8 +5646,11 @@ const RANGE=(()=>{
     const m=vals(),mx=Math.max(0,...Object.values(m).map(x=>x[MET]||0)),u=MN[MET][1];[['Tidak ada',0],['Rendah (≤ 25% tertinggi)',1],['Sedang (25–60%)',2],['Tinggi (> 60%)',3]].forEach(([n,i])=>{const c=Object.keys(m).filter(id=>byId(id)&&cls(id)===i).length,e=mk('span','lc');e.style.setProperty('--c',RC[i]);e.append(mk('span','sw'),n+(i?' · '+c:''));L.append(e);});
     L.append(mk('p','mnote',MN[MET][0]+' per Sistem, '+lab()+'. Tertinggi: '+nf(mx)+' '+u+'. Data dummy CMMS (log aktivitas); Sistem tanpa lokasi di peta tidak diwarnai.'));}
   const lc=window.layoutCard;window.layoutCard=function(a,s){lc(a,s);try{fillCard(a,s);}catch(e){console.warn('RANGE card',e);}};
-  function load(){fetch(URL_,{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(!d||!Array.isArray(d.records)||!d.records.length)return;D=d;
-      R=d.records.map(r=>Object.assign({},r,{id:idOf(r.sys,r.sub)}));min=R.reduce((m,r)=>day(r.s)<m?day(r.s):m,'9999');max=R.reduce((m,r)=>day(r.e)>m?day(r.e):m,'0000');from=min;to=max;
+  function load(){const T=isoD(new Date()),F=addD(T,-29),req=RMODE?fetchWin(addD(F,-30),T):fetch(URL_,{cache:'no-store'}).then(r=>r.ok?r.json():null);
+    req.then(d=>{if(!d||!Array.isArray(d.records)||(!RMODE&&!d.records.length))return;D=d;
+      R=d.records.map(r=>Object.assign({},r,{id:idOf(r.sys,r.sub)}));
+      if(RMODE){const rg=d.range||{};min=rg.min||addD(T,-365);max=rg.max||T;from=F<min?min:F;to=T>max?max:T;LW=[addD(F,-30),T];}
+      else{min=R.reduce((m,r)=>day(r.s)<m?day(r.s):m,'9999');max=R.reduce((m,r)=>day(r.e)>m?day(r.e):m,'0000');from=min;to=max;}
       try{const cs=$('cmSel');if(cs&&!cs.querySelector('option[value="rw"]')){const o=document.createElement('option');o.value='rw';o.textContent='Riwayat (OFF / CM)';cs.append(o);}}catch(e){}
       {const bl=window.buildLegend2;window.buildLegend2=function(){if(CM==='rw')return legend();return bl?bl():undefined;};}
       box=mk('div','rgbox');try{const tvr=COND.box.querySelector('.tvrow');if(tvr)COND.box.insertBefore(box,tvr);else COND.box.append(box);}catch(e){return;}draw();}).catch(()=>{});}

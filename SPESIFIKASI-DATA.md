@@ -262,6 +262,15 @@ Panel "Riwayat maintenance" menampilkan aktivitas pada rentang tanggal yang dipi
 - Tombol "Warnai peta menurut riwayat ini" mewarnai Sistem menurut jam OFF / jumlah CM pada rentang terpilih (mode warna "Riwayat"), dan kartu alat menampilkan garis waktu OFF/CM/PM.
 - Repo ini menyertakan `data/riwayat.json` berisi data dummy log aktivitas CMMS September 2026 (tanpa nama pelaksana), untuk contoh tampilan.
 
+### Pengaturan tambahan (v3.81)
+
+| Kunci `FENI_CONFIG` | Isi |
+|---|---|
+| `assetUrl` | Alamat registri aset (mis. `/api/peta/aset`). Dibaca sekali saat peta dibuka, sebelum data kondisi. Menggantikan/menambah `assetMap` dan membawa geofence per aset. |
+| `historyRange` | `true` → riwayat diambil per rentang: `historyUrl?from=YYYY-MM-DD&to=YYYY-MM-DD`. Peta meminta rentang terpilih **ditambah satu periode sebelumnya** (pembanding); bila rentang > 200 hari, tanpa pembanding. Saat dibuka, peta memuat 60 hari terakhir. |
+
+Respons riwayat boleh membawa `range: { min, max }` (tanggal data tertua/terbaru di CMMS) untuk membatasi pemilih tanggal.
+
 ## 5. Mode TV per Line
 
 Papan satu Line untuk layar besar: peta di kiri dengan alur Line, daftar Sistem pada Line itu di kanan (status, durasi, LTB/FB, WO terbuka, angka kinerja). Hanya menampilkan data.
@@ -330,3 +339,19 @@ Kalibrasi `geoRef` bawaan (v3.78): dua titik dari Google Maps, yaitu ujung RD4 s
 - `data/kondisi.json` di repo ini adalah data contoh; `data/riwayat.json` adalah data dummy dari CMMS (tanpa nama pelaksana). Jangan menaruh nama pelaksana atau data sensitif lain di repo publik.
 - Hasil pendataan dan edit layout di versi Claude disimpan di database artifact dan tidak ikut ke versi ini.
 - Posisi dan ukuran di peta skematis; kaitan Sistem ke lokasi dicocokkan dari nama dan belum seluruhnya dicek di lapangan.
+
+## 7. API untuk CMMS (draf)
+
+Spesifikasi lengkap: paket **api-kit** (`openapi.yaml`, contoh route Next.js + Supabase, view SQL, server tiruan).
+Semua endpoint hanya GET, hanya untuk peran Planner/Engineer/Manajemen (FR-AND-08), dan tidak membawa nama pelaksana.
+
+| Endpoint | Isi | Dipakai peta lewat |
+|---|---|---|
+| `GET /api/peta/kondisi` | Objek seperti §1 (Andon, WO, KPI, RCA, target, kepatuhan PM, prioritas) | `dataUrl` (atau pesan `feni:data`) |
+| `GET /api/peta/riwayat?from&to` | `{ range, records }` seperti §4b; maks. 400 hari | `historyUrl` + `historyRange: true` |
+| `GET /api/peta/aset` | `{ assets: [{ id, tag, system, mapId, geofence }] }` | `assetUrl` |
+
+```html
+<script>window.FENI_CONFIG = { dataUrl: "/api/peta/kondisi", refresh: 60,
+  historyUrl: "/api/peta/riwayat", historyRange: true, assetUrl: "/api/peta/aset" };</script>
+```
