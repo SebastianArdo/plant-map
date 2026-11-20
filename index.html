@@ -6125,17 +6125,12 @@ window.UI6=UI6;
 window.VRX=(()=>{
   const xr=navigator.xr,V3=THREE.Vector3,UP=new V3(0,1,0);
   let inXR=false,prev=false,mode='meja',session=null,refType='local-floor',lblOn=true;
-  /* --- rAF: saat sesi VR, window.requestAnimationFrame bisa berhenti; semua loop peta dialirkan lewat renderer.setAnimationLoop --- */
+  /* --- loop utama: saat sesi VR digerakkan oleh renderer.setAnimationLoop (frame XR). requestAnimationFrame browser TIDAK diubah
+     (emulator/polyfill WebXR memakainya untuk frame XR). Rantai loop lewat window dimatikan selama VR dan digabung lagi sesudahnya
+     (beberapa callback di frame yang sama → hanya satu yang jalan). --- */
   const _raf=window.requestAnimationFrame.bind(window),_caf=window.cancelAnimationFrame.bind(window);
-  const pend=new Map(),xq=new Map();let gen=0,fid=0;
-  if(xr){
-    window.requestAnimationFrame=function(cb){if(inXR){const id=--fid;xq.set(id,cb);return id;}const g=gen;let id=0;id=_raf(t=>{pend.delete(id);if(g!==gen)return;cb(t);});pend.set(id,cb);return id;};
-    window.cancelAnimationFrame=function(id){if(xq.delete(id))return;pend.delete(id);_caf(id);};
-  }
-  function toXR(){inXR=true;gen++;pend.forEach((cb,id)=>{_caf(id);xq.set(--fid,cb);});pend.clear();}
-  function fromXR(){inXR=false;const q=[...new Set(xq.values())];xq.clear();q.forEach(cb=>window.requestAnimationFrame(cb));}
-  function flush(t){const q=[...new Set(xq.values())];xq.clear();if(!q.includes(loop))q.push(loop);q.forEach(cb=>{try{cb(t);}catch(e){console.warn('VR frame',e);}});}
-
+  const L0=loop;let xrDrive=false,lastTs=-1;
+  loop=function(ts){if(xrDrive)return;if(ts!==undefined){if(ts===lastTs)return;lastTs=ts;}L0();};
   /* --- grup: rig (kamera, controller, panel; skala = pengguna) dan world (label, meja, penanda teleport) --- */
   const rig=new THREE.Group();rig.name='vrRig';const world=new THREE.Group();world.name='vrWorld';world.visible=false;
   const SG=SATG,C0=new V3(SG.cx,0,SG.cz);
@@ -6310,10 +6305,10 @@ window.VRX=(()=>{
       renderer.xr.enabled=true;renderer.xr.setReferenceSpaceType(refType);try{if(renderer.xr.setFoveation)renderer.xr.setFoveation(1);}catch(e){}
       if(!ctrls.length){mkCtrl(0);mkCtrl(1);}
       await renderer.xr.setSession(s);session=s;
-      toXR();enterCommon();renderer.setAnimationLoop(t=>{try{tick(t);}catch(e){console.warn('VR tick',e);}flush(t);});
+      xrDrive=true;enterCommon();renderer.setAnimationLoop(t=>{try{tick(t);}catch(e){console.warn('VR tick',e);}try{L0();}catch(e){console.warn('VR frame',e);}});
       s.addEventListener('end',onEnd);
     }catch(e){console.warn('VR',e);session=null;renderer.xr.enabled=false;note('VR tidak bisa dibuka di sini'+(e&&e.message?': '+e.message:'')+'. Buka peta dari alamat https di browser headset.');}}
-  function onEnd(){renderer.setAnimationLoop(null);session=null;renderer.xr.enabled=false;exitCommon();fromXR();}
+  function onEnd(){renderer.setAnimationLoop(null);session=null;renderer.xr.enabled=false;exitCommon();xrDrive=false;window.requestAnimationFrame(loop);}
   function exit(){if(session){session.end().catch(()=>onEnd());return;}if(prev)stopPreview();}
 
   /* --- pratinjau di PC (tanpa headset): #vr-preview-meja / #vr-preview-jalan. Klik = trigger, panah = stik. --- */
